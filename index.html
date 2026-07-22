@@ -492,6 +492,14 @@
     .access-card li svg { flex: 0 0 auto; width: 18px; height: 18px; margin-top: 2px; color: var(--accent); }
     .access-card .cta-primary { width: 100%; }
 
+    .mods { margin-top: 52px; }
+    .mods-k { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); text-align: center; margin: 0 0 18px; }
+    .mods-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    @media (min-width: 840px) { .mods-grid { grid-template-columns: repeat(4, 1fr); } }
+    .mod-tile { margin: 0; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--bg-card); box-shadow: var(--shadow-card); transition: transform 0.3s var(--ease), border-color 0.3s var(--ease); }
+    .mod-tile:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+    .mod-tile img { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
+    .mod-tile .mt-k { display: block; padding: 10px 12px; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-secondary); }
     .bonus-card { display: flex; flex-direction: column; }
     .bonus-card .bonus-desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; margin: 0 0 24px; }
     .price-compare { display: grid; gap: 10px; margin-bottom: 24px; }
@@ -589,58 +597,14 @@
     /* =========================================
        CUESTIONARIO de entrada (tipo Typeform, nativo)
        ========================================= */
-    .emk-quiz { position: fixed; inset: 0; z-index: 1100; display: none; flex-direction: column; background: var(--bg); overflow: hidden; }
-    .emk-quiz.active { display: flex; }
-    .emk-quiz::before { content: ""; position: absolute; inset: 0; background: var(--halo); opacity: 0.8; pointer-events: none; }
-    .emk-quiz::after { content: ""; position: absolute; left: 50%; bottom: -30%; width: 120%; height: 70%; transform: translateX(-50%); background: radial-gradient(ellipse 50% 50% at 50% 100%, var(--accent-soft), transparent 70%); pointer-events: none; }
 
-    .quiz-progress { position: relative; z-index: 2; height: 4px; background: var(--bg-elevated); flex: 0 0 auto; }
-    .quiz-bar { display: block; height: 100%; width: 0%; background: var(--metal-red); background-size: 200% auto; box-shadow: 0 0 12px var(--accent-ring); transition: width 0.5s var(--ease-spring); }
 
-    .quiz-stage { position: relative; z-index: 2; flex: 1 1 auto; display: flex; align-items: center; justify-content: center; padding: clamp(20px, 5vw, 48px); overflow-y: auto; }
-    .quiz-card { width: 100%; max-width: 620px; }
-    .js .quiz-card { animation: quiz-in 0.5s var(--ease-spring); }
-    .quiz-card.center { text-align: center; max-width: 560px; }
-    .quiz-card.center .quiz-logo { width: min(58vw, 230px); height: auto; fill: #fff; margin: 0 auto 26px; display: block; }
-    .quiz-card.center .quiz-q { font-size: clamp(1.7rem, 5vw, 2.4rem); }
-    .quiz-card.center .quiz-nav { justify-content: center; }
-    .quiz-card.center .quiz-next { margin-left: 0; }
 
-    .quiz-step-label { display: block; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
-    .quiz-step-label b { color: var(--accent); font-weight: 600; }
-    .quiz-q { font-size: clamp(1.5rem, 4.5vw, 2.1rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.12; color: var(--text-primary); }
-    .quiz-q .serif-italic { color: var(--accent); }
-    .quiz-help { margin-top: 10px; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; }
 
-    .quiz-input, .quiz-textarea { width: 100%; margin-top: 26px; background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-strong); border-radius: 14px; padding: 16px 18px; font: inherit; font-size: 1.05rem; transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease); }
-    .quiz-textarea { min-height: 120px; resize: vertical; line-height: 1.5; }
-    .quiz-input::placeholder, .quiz-textarea::placeholder { color: var(--text-muted); }
-    .quiz-input:focus, .quiz-textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 
-    .quiz-options { margin-top: 24px; display: grid; gap: 12px; }
-    .quiz-opt { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 15px 18px; color: var(--text-primary); font: inherit; font-size: 1rem; cursor: pointer; transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease), transform 0.2s var(--ease-spring); }
-    .quiz-opt:hover { border-color: var(--border-strong); transform: translateY(-1px); }
-    .quiz-opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .quiz-opt .opt-key { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; border: 1px solid var(--border-strong); font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease); }
-    .quiz-opt.selected { border-color: var(--accent); background: var(--accent-soft); }
-    .quiz-opt.selected .opt-key { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; }
-    .quiz-opt[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; }
-    .quiz-opt[aria-disabled="true"]:hover { transform: none; border-color: var(--border); }
 
-    .quiz-counter { margin-top: 14px; font-size: 0.85rem; color: var(--text-muted); }
-    .quiz-counter.full { color: var(--accent); }
-    .quiz-error { margin-top: 14px; font-size: 0.85rem; color: #ff7a7a; min-height: 1em; }
 
-    .quiz-nav { margin-top: 30px; display: flex; align-items: center; gap: 14px; }
-    .quiz-back { background: none; border: none; color: var(--text-muted); font: inherit; font-size: 0.95rem; cursor: pointer; padding: 10px 6px; transition: color 0.2s var(--ease); }
-    .quiz-back:hover { color: var(--text-primary); }
-    .quiz-next { margin-left: auto; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; background: var(--accent-strong); color: var(--accent-text-on); border: none; border-radius: var(--radius-button); padding: 14px 26px; font: inherit; font-weight: 500; font-size: 1rem; box-shadow: var(--shadow-cta); transition: transform 0.3s var(--ease-spring); }
-    .quiz-next:hover { transform: translateY(-1px); }
-    .quiz-next:focus-visible, .quiz-back:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .quiz-hint { margin-top: 14px; font-size: 0.78rem; color: var(--text-muted); }
-    .quiz-privacy { position: relative; z-index: 2; flex: 0 0 auto; text-align: center; padding: 0 20px 18px; color: var(--text-muted); font-size: 0.74rem; }
 
-    @keyframes quiz-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
     /* =========================================
        Reduced motion
@@ -654,8 +618,6 @@
       .lbox::after, .cta-primary::before { display: none; }
       .faq-panel { transition: none; }
       .wtile, .lightbox { transition: none; }
-      .js .quiz-card { animation: none; }
-      .quiz-bar, .quiz-opt, .quiz-next, .quiz-input, .quiz-textarea { transition: none; }
       .wtile:hover { transform: none; }
       /* Intro REDUCIDA: el logo igual se arma, pero con fade + leve scale,
          sin el barrido del logo, sin slide grande del texto ni spring. */
@@ -720,17 +682,7 @@
     <button class="intro-skip" type="button" aria-label="Saltar introducción">Saltar</button>
   </div>
 
-  <!-- =========================================
-       CUESTIONARIO de entrada — tipo Typeform, nativo (sin librerías).
-       Aparece solo la 1ª vez (gate localStorage 'emk_form_done').
-       Las respuestas viajan a FORM_ENDPOINT (ver script); revisar política de datos.
-       Requiere JS: sin JS queda oculto y la landing carga normal.
-       ========================================= -->
-  <div class="emk-quiz" id="emkQuiz" role="dialog" aria-modal="true" aria-label="Cuestionario de entrada" aria-hidden="true">
-    <div class="quiz-progress" aria-hidden="true"><span class="quiz-bar" id="quizBar"></span></div>
-    <div class="quiz-stage" id="quizStage"></div>
-    <p class="quiz-privacy">Usamos tus respuestas solo para tu diagnóstico.</p>
-  </div>
+
 
   <!-- Aurora roja de fondo -->
   <div class="ambient" aria-hidden="true">
@@ -776,7 +728,7 @@
         <div class="video-card">
           <span class="video-label"><span class="vl-dot" aria-hidden="true">K</span><span><b>Cristian de Souza</b> — Founder de EL MÉTODO KEYGEN</span></span>
           <!-- PLACEHOLDER: reemplazar PLACEHOLDER_LOOM_ID por el ID real del Loom -->
-          <iframe src="https://www.loom.com/embed/PLACEHOLDER_LOOM_ID" title="Presentación de METODO KEYGEN" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/wi5jARgaC38" title="Presentación de EL MÉTODO KEYGEN" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
       </div>
     </section>
@@ -787,7 +739,7 @@
     <section class="strip" aria-label="En números">
       <div class="container">
         <div class="strip-grid reveal">
-          <div class="metric"><span class="m-num">+50</span><span class="m-lbl">alumnas activas</span></div>
+          <div class="metric"><span class="m-num">+25</span><span class="m-lbl">alumnas ya pasaron por el programa</span></div>
           <div class="metric"><span class="m-num">4 <span class="u">meses</span></span><span class="m-lbl">para instalar el sistema</span></div>
           <div class="metric"><span class="m-num">~20 <span class="u">hs</span></span><span class="m-lbl">+ coach en vivo</span></div>
           <div class="metric"><span class="m-num">Diario</span><span class="m-lbl">soporte por WhatsApp</span></div>
@@ -856,7 +808,7 @@
     <section class="results" id="resultados">
       <div class="container">
         <div class="sec-head reveal">
-          <h2>Resultados de <span class="serif-italic accent">alumnas reales</span></h2>
+          <h2>Resultados de <span class="serif-italic accent">alumnas</span></h2>
           <p class="lead">Mujeres como vos, que dejaron de improvisar.</p>
         </div>
         <div class="profiles">
@@ -1004,7 +956,7 @@
         </div>
 
         <div class="results-more reveal">
-          <a class="btn-ghost" href="#muro">Ver el muro de wins reales →</a>
+          <a class="btn-ghost" href="#muro">Ver el muro de wins →</a>
         </div>
       </div>
     </section>
@@ -1026,7 +978,7 @@
             <ul>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>6 módulos paso a paso, una tarea por semana</li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>~60 clases · ~20 hs de contenido grabado</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>En vivo, martes y jueves de 18 a 20 hs</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span>En vivo, martes y jueves de 18 a 20 hs — <b>todas quedan grabadas</b> en su propio módulo, para verlas cuando puedas</span></li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Soporte diario por WhatsApp Business</li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Comunidad privada en Skool</li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Un coach humano que te acompaña por detrás</li>
@@ -1064,6 +1016,19 @@
           </article>
 
         </div>
+
+        <div class="mods">
+          <p class="mods-k reveal">El programa por dentro</p>
+          <div class="mods-grid">
+            <figure class="mod-tile reveal"><img src="assets/web/modulos/extra-onboarding.jpg" alt="Portada del módulo Onboarding" width="960" height="540" loading="lazy" decoding="async"><figcaption class="mt-k">Onboarding · para arrancar</figcaption></figure>
+            <figure class="mod-tile reveal"><img src="assets/web/modulos/modulo-1-mentalidad.jpg" alt="Portada del módulo 1: Mindset y visión" width="960" height="540" loading="lazy" decoding="async"><figcaption class="mt-k">Módulo 01 · Mindset y visión</figcaption></figure>
+            <figure class="mod-tile reveal"><img src="assets/web/modulos/modulo-2-posicionamiento.jpg" alt="Portada del módulo 2: Posicionamiento estratégico" width="960" height="540" loading="lazy" decoding="async"><figcaption class="mt-k">Módulo 02 · Posicionamiento</figcaption></figure>
+            <figure class="mod-tile reveal"><img src="assets/web/modulos/modulo-3-marketing.jpg" alt="Portada del módulo 3: Marketing" width="960" height="540" loading="lazy" decoding="async"><figcaption class="mt-k">Módulo 03 · Marketing</figcaption></figure>
+            <figure class="mod-tile reveal"><img src="assets/web/modulos/modulo-4-ventas.jpg" alt="Portada del módulo 4: Ventas" width="960" height="540" loading="lazy" decoding="async"><figcaption class="mt-k">Módulo 04 · Ventas</figcaption></figure>
+            <figure class="mod-tile reveal"><img src="assets/web/modulos/modulo-5-ads.jpg" alt="Portada del módulo 5: Ads" width="960" height="540" loading="lazy" decoding="async"><figcaption class="mt-k">Módulo 05 · Ads</figcaption></figure>
+            <figure class="mod-tile reveal"><img src="assets/web/modulos/extra-clases-en-vivo.jpg" alt="Portada del módulo Clases en vivo" width="960" height="540" loading="lazy" decoding="async"><figcaption class="mt-k">Clases en vivo · todas grabadas</figcaption></figure>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1074,7 +1039,7 @@
     <section class="wall" id="muro" style="scroll-margin-top: 90px;">
       <div class="container">
         <div class="sec-head wall-head reveal">
-          <h2>Wins reales de la <span class="serif-italic accent">comunidad</span></h2>
+          <h2>Wins de la <span class="serif-italic accent">comunidad</span></h2>
           <p class="lead">Capturas directas de lo que postean las alumnas.</p>
         </div>
         <div class="wall-grid">
@@ -1167,7 +1132,7 @@
 
           <article class="vvid lbox reveal">
             <div class="vv-media">
-              <iframe src="https://www.youtube.com/embed/fEAMGPeNdoI" title="Testimonio Julia Maskivker" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/3Fyy6oba6Tc" title="Testimonio Julia Maskivker" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="vv-body">
               <span class="vv-dot" aria-hidden="true">J</span>
@@ -1177,7 +1142,7 @@
 
           <article class="vvid lbox reveal">
             <div class="vv-media">
-              <iframe src="https://www.youtube.com/embed/Oa5k8alYXLg" title="Testimonio Camila Gonzales" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/BNblfyEN7-k" title="Testimonio Camila Gonzales" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="vv-body">
               <span class="vv-dot" aria-hidden="true">C</span>
@@ -1187,7 +1152,7 @@
 
           <article class="vvid lbox reveal">
             <div class="vv-media">
-              <iframe src="https://www.youtube.com/embed/nibYQ0fn5cM" title="Testimonio Ina Allievi" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/WmMujH5hvWU" title="Testimonio Ina Allievi" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="vv-body">
               <span class="vv-dot" aria-hidden="true">I</span>
@@ -1197,7 +1162,7 @@
 
           <article class="vvid lbox reveal">
             <div class="vv-media">
-              <iframe src="https://www.youtube.com/embed/WsMQbyZ2gio" title="Testimonio Liliana Quiroga" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/NIor3P8D3c4" title="Testimonio Liliana Quiroga" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="vv-body">
               <span class="vv-dot" aria-hidden="true">L</span>
@@ -1230,8 +1195,8 @@
           </div>
 
           <div class="faq-item">
-            <button class="faq-q" id="q3" aria-expanded="false" aria-controls="a3"><span>¿Sirve si no soy de las redes?</span><span class="ic" aria-hidden="true"></span></button>
-            <div class="faq-panel" id="a3" role="region" aria-labelledby="q3"><p class="faq-a">Sí. Trabajamos posicionamiento local y Google para que te encuentren en tu ciudad: <span class="serif-italic">no hace falta ser influencer.</span></p></div>
+            <button class="faq-q" id="q3" aria-expanded="false" aria-controls="a3"><span>¿Tengo que hacer contenido?</span><span class="ic" aria-hidden="true"></span></button>
+            <div class="faq-panel" id="a3" role="region" aria-labelledby="q3"><p class="faq-a">Te lo decimos de frente: el contenido es parte del sistema. E.M.K. es para las que <span class="serif-italic">ya están publicando y no le encuentran la vuelta.</span> No hace falta ser influencer — hace falta que ese contenido tenga sistema detrás. Eso es lo que instalamos.</p></div>
           </div>
 
           <div class="faq-item">
@@ -1340,236 +1305,12 @@
     })();
 
     /* =========================================
-       CUESTIONARIO de entrada — tipo Typeform, nativo (sin librerías).
-       Una pregunta por pantalla, progreso, atrás/siguiente, validación.
-       Expone start(onComplete).
-       <!-- Las respuestas viajan a FORM_ENDPOINT; revisar política de datos -->
-       ========================================= */
-    var EMK_Quiz = (function () {
-      var root = document.getElementById('emkQuiz');
-      var stage = document.getElementById('quizStage');
-      var bar = document.getElementById('quizBar');
-      if (!root || !stage) return null;
-
-      /* === Endpoint de envío (Formspree/Getform/Basin). Reemplazá el ID. === */
-      var FORM_ENDPOINT = "https://formspree.io/f/PLACEHOLDER_ID"; // <-- reemplazar
-
-      /* === Las 5 preguntas (array editable: sumá / cambiá acá; no metas las 25) === */
-      var QUESTIONS = [
-        { id: 'nombre', type: 'short', required: true, q: '¿Cómo te llamás?', placeholder: 'Tu nombre' },
-        { id: 'ubicacion', type: 'short', required: true, q: '¿De dónde sos?', help: 'Ciudad / provincia', placeholder: 'Ej: La Plata, Buenos Aires' },
-        { id: 'rol', type: 'single', required: true, q: '¿Con cuál rol te sentís más identificada hoy?', options: [
-          'Cosmetóloga independiente (espacio adaptado)',
-          'Cosmetóloga independiente (gabinete propio/alquilado)',
-          'Dueña en crecimiento (con equipo chico)',
-          'Centro / clínica establecida',
-          'Otro'
-        ] },
-        { id: 'dolor', type: 'multi', required: true, max: 3, q: '¿Qué es lo que más te traba hoy?', help: 'Elegí hasta 3', options: [
-          'Depender de promos y descuentos para llenar la agenda',
-          'Agenda intermitente (semanas llenas y semanas flojas)',
-          'Pocas clientas calificadas (muchas curiosas, pocas ventas)',
-          'Sentir que sos “una más” (te falta diferencial)',
-          'Cuesta vender paquetes de alto valor',
-          'Atendés todo el día y no te queda tiempo para gestionar',
-          'Te sentís improvisando en la venta por WhatsApp',
-          'Te falta un sistema claro (tráfico → conversación → reserva)'
-        ] },
-        { id: 'deseo', type: 'long', required: true, q: 'Imaginá que pasaron unos meses y tu agenda funciona casi sola: ¿cómo se ve un <span class="serif-italic">martes ideal</span> en tu gabinete?', help: 'Cómo te sentís con tu agenda, tus clientas y tu tiempo.', placeholder: 'Escribí lo que imaginás…' }
-      ];
-
-      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var LOGO = '<svg class="quiz-logo" viewBox="0 0 1324.28 420.2" role="img" aria-label="El Método Keygen"><use href="#emkK"/><use href="#emkWord"/></svg>';
-      var answers = {}, idx = -1, onComplete = null;
-
-      function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-      function setBar() { var pct = idx < 0 ? 0 : (idx >= QUESTIONS.length ? 100 : Math.round(idx / QUESTIONS.length * 100)); if (bar) bar.style.width = pct + '%'; }
-      function valid(q) { var v = answers[q.id]; if (q.type === 'multi') return v && v.length >= 1; if (q.type === 'single') return !!v; return v && String(v).trim().length > 0; }
-      function clearErr() { var el = stage.querySelector('#qerr'); if (el) el.textContent = ''; }
-      function showErr(q) { var el = stage.querySelector('#qerr'); var m = q.type === 'multi' ? 'Elegí al menos una opción.' : (q.type === 'single' ? 'Elegí una opción.' : 'Completá este campo para seguir.'); if (el) el.textContent = m; }
-
-      function welcomeHTML() {
-        return LOGO +
-          '<h2 class="quiz-q">Antes de entrar, <span class="serif-italic">contame de vos</span>.</h2>' +
-          '<p class="quiz-help">5 preguntas rápidas para personalizar lo que vas a ver. Menos de un minuto.</p>' +
-          '<div class="quiz-nav"><button class="quiz-next" type="button" data-action="start" data-autofocus>¡Quiero empezar!</button></div>';
-      }
-      function finalHTML() {
-        var n = (answers.nombre || '').trim();
-        return LOGO +
-          '<h2 class="quiz-q">' + (n ? '¡Listo, ' + esc(n) + '!' : '¡Listo!') + '</h2>' +
-          '<p class="quiz-help">Gracias por contarnos. Preparamos todo para vos…</p>';
-      }
-      function questionHTML(q) {
-        var head = '<span class="quiz-step-label">Pregunta <b>' + (idx + 1) + '</b> de ' + QUESTIONS.length + '</span>' +
-                   '<h2 class="quiz-q">' + q.q + '</h2>' + (q.help ? '<p class="quiz-help">' + esc(q.help) + '</p>' : '');
-        var body = '';
-        if (q.type === 'short') {
-          body = '<input class="quiz-input" type="text" id="qf" value="' + esc(answers[q.id] || '') + '" placeholder="' + esc(q.placeholder || '') + '" autocomplete="off" data-autofocus>';
-        } else if (q.type === 'long') {
-          body = '<textarea class="quiz-textarea" id="qf" placeholder="' + esc(q.placeholder || '') + '" data-autofocus>' + esc(answers[q.id] || '') + '</textarea>';
-        } else if (q.type === 'single') {
-          body = '<div class="quiz-options" role="radiogroup">';
-          q.options.forEach(function (opt, i) {
-            var sel = answers[q.id] === opt;
-            body += '<button class="quiz-opt' + (sel ? ' selected' : '') + '" type="button" role="radio" aria-checked="' + (sel ? 'true' : 'false') + '" data-opt="' + esc(opt) + '"' + (i === 0 ? ' data-autofocus' : '') + '><span class="opt-key" aria-hidden="true">' + String.fromCharCode(65 + i) + '</span><span>' + esc(opt) + '</span></button>';
-          });
-          body += '</div>';
-        } else if (q.type === 'multi') {
-          var cur = answers[q.id] || [];
-          body = '<div class="quiz-options" role="group" aria-label="' + esc(q.q) + '">';
-          q.options.forEach(function (opt, i) {
-            var sel = cur.indexOf(opt) >= 0;
-            body += '<button class="quiz-opt' + (sel ? ' selected' : '') + '" type="button" role="checkbox" aria-checked="' + (sel ? 'true' : 'false') + '" data-opt="' + esc(opt) + '"' + (i === 0 ? ' data-autofocus' : '') + '><span class="opt-key" aria-hidden="true">' + (sel ? '✓' : '') + '</span><span>' + esc(opt) + '</span></button>';
-          });
-          body += '</div><p class="quiz-counter" id="qcount"></p>';
-        }
-        var nav = '<div class="quiz-nav"><button class="quiz-back" type="button" data-action="back">← Atrás</button>' +
-                  '<button class="quiz-next" type="button" data-action="next">' + (idx === QUESTIONS.length - 1 ? 'Finalizar' : 'Siguiente') + '</button></div>';
-        var hint = '<p class="quiz-hint">' + (q.type === 'long' ? 'Ctrl/⌘ + Enter para continuar' : 'Enter para continuar') + '</p>';
-        return head + body + '<p class="quiz-error" id="qerr" role="alert"></p>' + nav + hint;
-      }
-
-      function updateMultiCounter() {
-        var q = QUESTIONS[idx], cur = answers[q.id] || [], el = stage.querySelector('#qcount');
-        if (!el) return;
-        el.textContent = cur.length + ' / ' + q.max + ' seleccionadas';
-        el.classList.toggle('full', cur.length >= q.max);
-        Array.prototype.forEach.call(stage.querySelectorAll('.quiz-opt'), function (b) {
-          var on = cur.indexOf(b.getAttribute('data-opt')) >= 0;
-          if (!on && cur.length >= q.max) b.setAttribute('aria-disabled', 'true'); else b.removeAttribute('aria-disabled');
-        });
-      }
-
-      function wire() {
-        var startBtn = stage.querySelector('[data-action="start"]'); if (startBtn) startBtn.addEventListener('click', function () { go(0); });
-        var backBtn = stage.querySelector('[data-action="back"]'); if (backBtn) backBtn.addEventListener('click', function () { go(idx - 1); });
-        var nextBtn = stage.querySelector('[data-action="next"]'); if (nextBtn) nextBtn.addEventListener('click', advance);
-
-        var q = (idx >= 0 && idx < QUESTIONS.length) ? QUESTIONS[idx] : null;
-        if (!q) return;
-
-        if (q.type === 'single') {
-          Array.prototype.forEach.call(stage.querySelectorAll('.quiz-opt'), function (b) {
-            b.addEventListener('click', function () {
-              answers[q.id] = b.getAttribute('data-opt');
-              Array.prototype.forEach.call(stage.querySelectorAll('.quiz-opt'), function (x) { x.classList.remove('selected'); x.setAttribute('aria-checked', 'false'); });
-              b.classList.add('selected'); b.setAttribute('aria-checked', 'true');
-              clearErr();
-              setTimeout(advance, reduced ? 0 : 180);   /* seleccionar avanza */
-            });
-          });
-        } else if (q.type === 'multi') {
-          updateMultiCounter();
-          Array.prototype.forEach.call(stage.querySelectorAll('.quiz-opt'), function (b) {
-            b.addEventListener('click', function () {
-              var cur = answers[q.id] || [], opt = b.getAttribute('data-opt'), at = cur.indexOf(opt);
-              if (at >= 0) { cur.splice(at, 1); } else { if (cur.length >= q.max) return; cur.push(opt); }
-              answers[q.id] = cur;
-              var on = cur.indexOf(opt) >= 0;
-              b.classList.toggle('selected', on); b.setAttribute('aria-checked', on ? 'true' : 'false');
-              var key = b.querySelector('.opt-key'); if (key) key.textContent = on ? '✓' : '';
-              clearErr(); updateMultiCounter();
-            });
-          });
-        } else {
-          var field = stage.querySelector('#qf');
-          if (field) {
-            field.addEventListener('input', function () { answers[q.id] = field.value; clearErr(); });
-            field.addEventListener('keydown', function (e) {
-              if (q.type === 'long') { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); advance(); } }
-              else if (e.key === 'Enter') { e.preventDefault(); advance(); }
-            });
-          }
-        }
-      }
-
-      function render() {
-        setBar();
-        var inner = idx === -1 ? welcomeHTML() : (idx >= QUESTIONS.length ? finalHTML() : questionHTML(QUESTIONS[idx]));
-        var centered = (idx === -1 || idx >= QUESTIONS.length) ? ' center' : '';
-        stage.innerHTML = '<div class="quiz-card' + centered + '">' + inner + '</div>';
-        wire();
-        var f = stage.querySelector('[data-autofocus]'); if (f) { try { f.focus({ preventScroll: true }); } catch (e) { try { f.focus(); } catch (e2) {} } }
-      }
-
-      function advance() {
-        if (idx >= 0 && idx < QUESTIONS.length) { var q = QUESTIONS[idx]; if (q.required && !valid(q)) { showErr(q); return; } }
-        go(idx + 1);
-      }
-      function go(n) {
-        idx = n < -1 ? -1 : n;
-        render();
-        if (idx >= QUESTIONS.length) finalize();
-      }
-
-      function submit() {
-        var payload = {};
-        QUESTIONS.forEach(function (q) { payload[q.id] = answers[q.id] != null ? answers[q.id] : ''; });
-        payload._ts = new Date().toISOString();
-        payload._origen = (document.referrer || '').slice(0, 300);
-        try { localStorage.setItem('emk_form_answers', JSON.stringify(payload)); } catch (e) { /* storage bloqueado */ }
-        /* POST fire-and-forget: nunca bloquea el ingreso a la landing.
-           Mientras el endpoint sea el PLACEHOLDER no se envía (evita errores de red en consola). */
-        try {
-          if (window.fetch && FORM_ENDPOINT.indexOf('PLACEHOLDER') === -1) {
-            fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(payload) })
-              .catch(function () { /* error de red silencioso: respaldo ya guardado en localStorage */ });
-          }
-        } catch (e) { /* noop */ }
-      }
-
-      function finalize() {
-        submit();
-        setTimeout(function () {
-          root.classList.remove('active');
-          root.setAttribute('aria-hidden', 'true');
-          var cb = onComplete; onComplete = null;
-          if (cb) cb();
-        }, reduced ? 900 : 1500);
-      }
-
-      /* trampa de foco simple (el overlay es modal) */
-      root.addEventListener('keydown', function (e) {
-        if (e.key !== 'Tab' || !root.classList.contains('active')) return;
-        var f = root.querySelectorAll('button:not([disabled]), input, textarea, [tabindex]:not([tabindex="-1"])');
-        if (!f.length) return;
-        var first = f[0], last = f[f.length - 1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-      });
-
-      function start(cb) { onComplete = cb || null; answers = {}; idx = -1; root.classList.add('active'); root.setAttribute('aria-hidden', 'false'); render(); }
-      return { start: start };
-    })();
-
-    /* =========================================
-       ORQUESTADOR de entrada: intro → (1ª vez) cuestionario → intro → landing.
-       Gate por localStorage 'emk_form_done'.
-       LIMITACIÓN: localStorage es por navegador/dispositivo. En modo incógnito o
-       si se borran los datos, el cuestionario puede reaparecer. Sin backend/login
-       no hay forma de saber "quién" ya lo completó; esto es lo más cercano sin servidor.
+       ENTRADA: intro -> landing directa (sin cuestionario)
        ========================================= */
     (function () {
-      var KEY = 'emk_form_done';
-      function isDone() { try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; } }
-      function setDone() { try { localStorage.setItem(KEY, '1'); localStorage.setItem('emk_form_date', new Date().toISOString()); } catch (e) { /* storage bloqueado: se mostrará de nuevo, aceptable */ } }
-
-      if (!EMK_Intro) { return; }          /* sin intro → landing directa */
+      if (!EMK_Intro) { return; }
       EMK_Intro.lock();
-
-      if (isDone() || !EMK_Quiz) {
-        /* ya completó (o no hay cuestionario): intro normal → landing */
-        EMK_Intro.play(function () { EMK_Intro.unlock(); });
-        return;
-      }
-      /* 1ª vez: intro → cuestionario → intro → landing */
-      EMK_Intro.play(function () {
-        EMK_Quiz.start(function () {
-          setDone();
-          EMK_Intro.play(function () { EMK_Intro.unlock(); });
-        });
-      });
+      EMK_Intro.play(function () { EMK_Intro.unlock(); });
     })();
 
     /* =========================================
