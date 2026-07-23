@@ -23,6 +23,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" href="assets/fonts/cinematografica-heavy.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css">
+  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 
   <style>
@@ -703,7 +705,7 @@
       <a href="#resultados">Resultados</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a class="header-cta" href="https://calendly.com/kevindesouzafarias5/30min" target="_blank" rel="noopener">Agendar llamada</a>
+    <a class="header-cta" href="https://calendly.com/keygenestudio/new-meeting" target="_blank" rel="noopener">Agendar llamada</a>
   </header>
 
   <main>
@@ -718,7 +720,7 @@
         <h1 class="reveal">Un negocio con <span class="serif-italic accent">orden</span>, no solo movimiento.</h1>
         <p class="lead reveal">El sistema que migra tu negocio de vender sesiones sueltas a vender tratamientos — sin perseguir a nadie.</p>
         <div class="reveal">
-          <a class="cta-primary" href="https://calendly.com/kevindesouzafarias5/30min" target="_blank" rel="noopener" aria-label="Agendar mi llamada">Agendar mi llamada</a>
+          <a class="cta-primary" href="https://calendly.com/keygenestudio/new-meeting" target="_blank" rel="noopener" aria-label="Agendar mi llamada">Agendar mi llamada</a>
         </div>
       </div>
 
@@ -984,7 +986,7 @@
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Un coach humano que te acompaña por detrás</li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><b>Bonus incluido:</b> el curso completo <i>Digitaliza tu gabinete con Claude</i> — es el módulo 6 del programa</span></li>
             </ul>
-            <a class="cta-primary" href="https://calendly.com/kevindesouzafarias5/30min" target="_blank" rel="noopener">Agendar mi llamada</a>
+            <a class="cta-primary" href="https://calendly.com/keygenestudio/new-meeting" target="_blank" rel="noopener">Agendar mi llamada</a>
 
             <!-- ===========================================================
                  PRECIO — DESACTIVADO (el funnel es llamada de aplicación).
@@ -1224,7 +1226,7 @@
       <div class="container-text">
         <h2 class="reveal">La pregunta no es si <span class="serif-italic accent">funciona</span>. Es cuánto tiempo más vas a seguir improvisando.</h2>
         <div class="reveal">
-          <a class="cta-primary lg" href="https://calendly.com/kevindesouzafarias5/30min" target="_blank" rel="noopener" aria-label="Agendar mi llamada de aplicación">Agendar mi llamada de aplicación</a>
+          <a class="cta-primary lg" href="https://calendly.com/keygenestudio/new-meeting" target="_blank" rel="noopener" aria-label="Agendar mi llamada de aplicación">Agendar mi llamada de aplicación</a>
         </div>
       </div>
     </section>
@@ -1240,7 +1242,7 @@
         <a href="#metodo">Método</a>
         <a href="#resultados">Resultados</a>
         <a href="#faq">FAQ</a>
-        <a href="https://calendly.com/kevindesouzafarias5/30min" target="_blank" rel="noopener">Agendar llamada</a>
+        <a href="https://calendly.com/keygenestudio/new-meeting" target="_blank" rel="noopener">Agendar llamada</a>
       </nav>
       <span class="foot-copy">© 2026 METODO KEYGEN</span>
     </div>
@@ -1311,6 +1313,23 @@
       EMK_Intro.lock();
       EMK_Intro.play(function () { EMK_Intro.unlock(); });
     })();
+
+    /* =========================================
+       Calendly: los botones "Agendar llamada" abren el calendario en popup.
+       Mejora progresiva: sin JS, el href sigue funcionando (abre en pestaña nueva).
+       ========================================= */
+    (function () {
+      var links = document.querySelectorAll('a[href*="calendly.com"]');
+      Array.prototype.forEach.call(links, function (a) {
+        a.addEventListener('click', function (e) {
+          if (window.Calendly && typeof Calendly.initPopupWidget === 'function') {
+            e.preventDefault();
+            Calendly.initPopupWidget({ url: a.getAttribute('href') });
+          }
+        });
+      });
+    })();
+
 
     /* =========================================
        Reveal on scroll (stagger + IntersectionObserver)
