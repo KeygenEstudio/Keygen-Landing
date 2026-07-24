@@ -494,6 +494,59 @@
     .access-card li svg { flex: 0 0 auto; width: 18px; height: 18px; margin-top: 2px; color: var(--accent); }
     .access-card .cta-primary { width: 100%; }
 
+    /* ===== Seccion PLATAFORMA (mockup fiel del SaaS real) ===== */
+    .plataforma { position: relative; }
+    .plataforma .container { position: relative; z-index: 2; }
+    .plat-frame { max-width: 1040px; margin: 44px auto 0; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-strong); background: #0A0A0C; box-shadow: 0 30px 90px rgba(0,0,0,0.6), 0 0 60px rgba(232,17,45,0.12); }
+    .plat-shot { display: block; width: 100%; height: auto; }
+    .plat-bar { display: flex; align-items: center; gap: 14px; padding: 11px 16px; background: #141418; border-bottom: 1px solid var(--border); }
+    .plat-dots { display: flex; gap: 7px; }
+    .plat-dots i { width: 11px; height: 11px; border-radius: 50%; background: #35353b; display: block; }
+    .plat-url { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); background: #0e0e11; border: 1px solid var(--border); border-radius: 999px; padding: 5px 14px; letter-spacing: 0.02em; }
+    .plat-body { padding: 26px clamp(18px, 4vw, 40px) 34px; }
+    /* top nav */
+    .plat-topnav { display: flex; align-items: center; gap: 10px; justify-content: center; flex-wrap: wrap; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 999px; padding: 8px 12px; margin-bottom: 30px; }
+    .plat-logo { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.02em; color: #fff; margin-right: 6px; }
+    .plat-tab { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 999px; font-size: 0.78rem; color: var(--text-secondary); }
+    .plat-tab svg { width: 15px; height: 15px; }
+    .plat-tab.on { background: var(--accent); color: #fff; box-shadow: 0 0 16px rgba(232,17,45,0.4); }
+    /* header */
+    .plat-eye { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
+    .plat-h { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; letter-spacing: 0.01em; font-size: clamp(1.6rem, 3.4vw, 2.3rem); color: #fff; margin: 8px 0 8px; }
+    .plat-sub { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; max-width: 520px; margin: 0 0 22px; }
+    /* card proximo paso */
+    .plat-next { position: relative; border: 1px solid var(--border-accent, rgba(232,17,45,0.35)); border-radius: 16px; padding: 22px 24px; background: radial-gradient(120% 140% at 0% 0%, rgba(232,17,45,0.14), rgba(232,17,45,0.02) 60%), rgba(255,255,255,0.02); display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+    .plat-next-l { flex: 1 1 300px; }
+    .plat-next-k { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+    .plat-next-h { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; letter-spacing: 0.01em; font-size: 1.5rem; color: #fff; margin: 8px 0 16px; }
+    .plat-active { border: 1px solid var(--border); border-radius: 11px; background: rgba(0,0,0,0.3); padding: 13px 15px; margin-bottom: 16px; }
+    .plat-active span { display: block; font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; }
+    .plat-active b { color: var(--text-primary); font-size: 0.95rem; font-weight: 500; }
+    .plat-btns { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .plat-cta { background: linear-gradient(180deg, #ff3b48, var(--accent)); color: #fff; border-radius: 999px; padding: 10px 20px; font-size: 0.85rem; font-weight: 600; box-shadow: 0 0 20px rgba(232,17,45,0.4); }
+    .plat-link { color: var(--accent); font-size: 0.85rem; font-weight: 500; }
+    /* ring */
+    .plat-ring { width: 104px; height: 104px; border-radius: 50%; flex: 0 0 auto; background: conic-gradient(var(--accent) 0turn .42turn, rgba(255,255,255,0.08) .42turn 1turn); display: grid; place-items: center; position: relative; box-shadow: 0 0 24px rgba(232,17,45,0.18); }
+    .plat-ring::before { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: #100b0d; }
+    .plat-ring .rv { position: relative; text-align: center; }
+    .plat-ring .rv b { font-family: var(--font-display); font-weight: 900; font-size: 1.35rem; color: #fff; display: block; line-height: 1; }
+    .plat-ring .rv span { font-family: var(--font-mono); font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+    /* despues de eso */
+    .plat-after-h { display: flex; align-items: center; justify-content: space-between; margin: 26px 0 12px; }
+    .plat-after-h span { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+    .plat-after-h a { color: var(--accent); font-size: 0.72rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; }
+    .plat-row { display: flex; align-items: center; gap: 12px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,0.02); padding: 14px 16px; margin-bottom: 10px; font-size: 0.9rem; color: var(--text-primary); }
+    .plat-row .rc { width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--border-strong); flex: 0 0 auto; }
+    /* feature cards */
+    .plat-feats { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 40px; }
+    @media (min-width: 720px) { .plat-feats { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1000px) { .plat-feats { grid-template-columns: repeat(4, 1fr); } }
+    .plat-feat { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 22px 20px; box-shadow: var(--shadow-card); }
+    .plat-feat h3 { font-family: var(--font-display); font-weight: 800; letter-spacing: 0.01em; font-size: 1.05rem; color: var(--text-primary); margin: 0 0 8px; }
+    .plat-feat p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.55; margin: 0; }
+    .plat-feat .pf-n { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; display: block; margin-bottom: 12px; }
+    .plat-close { text-align: center; max-width: 720px; margin: 40px auto 0; font-family: var(--font-display); font-weight: 900; text-transform: uppercase; letter-spacing: 0.01em; line-height: 0.98; font-size: clamp(1.4rem, 3vw, 2.1rem); color: var(--text-primary); }
+    .plat-close .accent { color: var(--accent); }
     .mods { margin-top: 52px; }
     .mods-k { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); text-align: center; margin: 0 0 18px; }
     .mods-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
@@ -1030,6 +1083,38 @@
             <figure class="mod-tile reveal"><img src="assets/web/modulos/extra-clases-en-vivo.jpg" alt="Portada del módulo Clases en vivo" width="960" height="540" loading="lazy" decoding="async"><figcaption class="mt-k">Clases en vivo · todas grabadas</figcaption></figure>
           </div>
         </div>
+      </div>
+    </section>
+
+
+    <!-- =========================================
+         5c) PLATAFORMA DE ALUMNAS (SaaS) — "es un juego"
+         ========================================= -->
+    <section class="plataforma" id="plataforma" style="scroll-margin-top: 90px;">
+      <div class="dot-grid" aria-hidden="true"></div>
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="eyebrow">Tu plataforma de alumna</span>
+          <h2>Esto no se mira. <span class="serif-italic accent">Se juega.</span></h2>
+          <p class="lead">Entrás, y el método se te convierte en un tablero. Tu negocio auditado, tu roadmap propio y las tareas de la semana esperándote. Subís de nivel entregando — y del otro lado hay alguien que te corrige. No es una biblioteca de videos: es un juego que se gana haciendo.</p>
+        </div>
+
+        <figure class="plat-frame reveal">
+          <div class="plat-bar">
+            <span class="plat-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="plat-url">keygen-saas-platform.vercel.app/inicio</span>
+          </div>
+          <img class="plat-shot" src="assets/web/plataforma/plataforma-inicio.jpg" alt="Plataforma de alumnas de El Método Keygen: inicio con tu próximo paso, tarea activa y progreso del programa" width="1500" height="1194" loading="lazy" decoding="async">
+        </figure>
+
+        <div class="plat-feats">
+          <div class="plat-feat reveal"><span class="pf-n">01</span><h3>Tu roadmap, no el de otra</h3><p>En el onboarding auditamos TU negocio y te armamos un camino a tu medida. Cada una entra a su propia partida, no a un curso genérico.</p></div>
+          <div class="plat-feat reveal"><span class="pf-n">02</span><h3>Subís de nivel entregando</h3><p>Cada etapa se desbloquea cuando completás y entregás. Nada de perderte entre 60 videos el día uno: una jugada a la vez.</p></div>
+          <div class="plat-feat reveal"><span class="pf-n">03</span><h3>Alguien te corrige</h3><p>Subís tu tarea y el equipo te la revisa con devolución: aprobada, o de vuelta con nota. No estás sola frente a la pantalla.</p></div>
+          <div class="plat-feat reveal"><span class="pf-n">04</span><h3>Siempre sabés qué sigue</h3><p>Entrás y en 3 segundos ves dónde estás parada y cuál es tu próxima tarea. Se acabó el "no sé por dónde empezar".</p></div>
+        </div>
+
+        <p class="plat-close reveal">La diferencia entre "compré un curso" y <span class="accent">"estoy jugando a ganar mi negocio"</span> es todo.</p>
       </div>
     </section>
 
