@@ -7,6 +7,28 @@
   <title>EL MÉTODO KEYGEN — Un negocio con orden, no solo movimiento</title>
   <meta name="description" content="El sistema de 4 meses que migra tu negocio de estética de vender sesiones sueltas a vender tratamientos completos, con pacientes que te eligen por vos." />
 
+  <!-- =========================================
+       Previsualizacion al compartir el link (WhatsApp, Instagram, Facebook).
+       Sin esto, las apps agarran la primera imagen que encuentran en la pagina.
+       ⚠ Si el sitio cambia de dominio, actualizar las dos URLs absolutas de abajo.
+       ========================================= -->
+  <link rel="canonical" href="https://keygen-landing-dusky.vercel.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="EL MÉTODO KEYGEN" />
+  <meta property="og:locale" content="es_AR" />
+  <meta property="og:url" content="https://keygen-landing-dusky.vercel.app/" />
+  <meta property="og:title" content="EL MÉTODO KEYGEN — Un negocio con orden, no solo movimiento" />
+  <meta property="og:description" content="El sistema de 4 meses que migra tu negocio de estética de vender sesiones sueltas a vender tratamientos completos, con pacientes que te eligen por vos." />
+  <meta property="og:image" content="https://keygen-landing-dusky.vercel.app/assets/web/og-cover.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="EL MÉTODO KEYGEN — Un negocio con orden, no solo movimiento" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="EL MÉTODO KEYGEN — Un negocio con orden, no solo movimiento" />
+  <meta name="twitter:description" content="El sistema de 4 meses que migra tu negocio de estética de vender sesiones sueltas a vender tratamientos completos, con pacientes que te eligen por vos." />
+  <meta name="twitter:image" content="https://keygen-landing-dusky.vercel.app/assets/web/og-cover.jpg" />
+
   <!-- Marca .js cuanto antes: las animaciones reveal solo se ocultan con JS activo (sin JS, todo visible) -->
   <script>document.documentElement.classList.add('js');</script>
 
@@ -23,8 +45,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" href="assets/fonts/cinematografica-heavy.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css">
-  <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+  <!-- Calendly retirado: el funnel ahora entra por el formulario de calificacion -> WhatsApp. -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 
   <style>
@@ -682,6 +703,110 @@
       .intro-word { transform: none; opacity: 0; animation: iw-soft 0.6s var(--ease) 0.55s forwards; }
       .intro-skip { transform: translateX(-50%); opacity: 0; animation: iw-soft 0.4s var(--ease) 1s forwards; }
     }
+    /* =========================================
+       FORMULARIO DE CALIFICACIÓN (pop-up)
+       Se abre con los CTA "Iniciar conversación".
+       Filtra por nivel de conciencia digital y de negocio:
+       califica → WhatsApp · no califica → curso.
+       ========================================= */
+    .qf { position: fixed; inset: 0; z-index: 1300; display: none; align-items: center; justify-content: center;
+          padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); }
+    .qf.open { display: flex; }
+    .qf-backdrop { position: absolute; inset: 0; background: rgba(6, 6, 8, 0.88);
+                   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+                   opacity: 0; transition: opacity 0.3s var(--ease); }
+    .qf.in .qf-backdrop { opacity: 1; }
+
+    .qf-panel { position: relative; width: 100%; max-width: 560px; max-height: calc(100dvh - 32px);
+                display: flex; flex-direction: column; overflow: hidden;
+                background: var(--bg-elevated); border: 1px solid var(--border-strong);
+                border-radius: var(--radius-card, 20px); box-shadow: var(--shadow-card-hover);
+                opacity: 0; transform: translateY(16px) scale(0.98);
+                transition: opacity 0.35s var(--ease), transform 0.45s var(--ease-spring); }
+    .qf.in .qf-panel { opacity: 1; transform: none; }
+    .qf-panel::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+                        background: var(--halo); opacity: 0.7; }
+
+    .qf-close { position: absolute; top: 10px; right: 12px; z-index: 3; width: 40px; height: 40px;
+                display: grid; place-items: center; background: none; border: 0; cursor: pointer;
+                color: var(--text-muted); font-size: 1.75rem; line-height: 1; border-radius: 50%;
+                transition: color 0.2s var(--ease), background 0.2s var(--ease); }
+    .qf-close:hover { color: var(--text-primary); background: rgba(255, 255, 255, 0.06); }
+
+    .qf-head { position: relative; z-index: 2; padding: 22px 26px 0; }
+    .qf-step { display: block; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.14em;
+               text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+    .qf-bar { height: 3px; border-radius: 99px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+    .qf-bar i { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--accent);
+                transition: width 0.5s var(--ease); }
+
+    .qf-body { position: relative; z-index: 2; padding: 24px 26px 28px; overflow-y: auto;
+               -webkit-overflow-scrolling: touch; }
+    .qf-fade { animation: qf-in 0.4s var(--ease) both; }
+    @keyframes qf-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+    .qf-intro-k { display: block; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.14em;
+                  text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+    .qf-q { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.01em;
+            font-size: clamp(1.375rem, 4.6vw, 1.75rem); line-height: 1.15; color: var(--text-primary); margin: 0 0 6px; }
+    .qf-hint { font-size: 0.875rem; line-height: 1.5; color: var(--text-secondary); margin: 0 0 20px; }
+
+    .qf-opts { display: flex; flex-direction: column; gap: 10px; }
+    .qf-opt { width: 100%; display: flex; align-items: center; gap: 14px; text-align: left;
+              min-height: 60px; padding: 14px 16px; cursor: pointer;
+              font-family: var(--font-sans); font-size: 1rem; line-height: 1.35; font-weight: 400;
+              color: var(--text-primary); background: var(--bg-card); border: 1px solid var(--border);
+              border-radius: var(--radius-button, 12px);
+              transition: border-color 0.2s var(--ease), background 0.2s var(--ease), transform 0.25s var(--ease-spring); }
+    .qf-opt:hover { background: var(--bg-card-hover); border-color: var(--border-strong); transform: translateY(-1px); }
+    .qf-opt:focus-visible { outline: 2px solid var(--accent-ring); outline-offset: 2px; }
+    .qf-opt.sel { border-color: var(--accent); background: var(--accent-soft); }
+    .qf-dot { flex: 0 0 auto; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border-strong);
+              position: relative; transition: border-color 0.2s var(--ease); }
+    .qf-opt:hover .qf-dot { border-color: var(--accent); }
+
+    .qf-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; }
+    .qf-back { background: none; border: 0; cursor: pointer; padding: 8px 2px;
+               font-family: var(--font-sans); font-size: 0.875rem; color: var(--text-muted);
+               transition: color 0.2s var(--ease); }
+    .qf-back:hover { color: var(--text-primary); }
+    .qf-legal { font-size: 0.75rem; color: var(--text-muted); text-align: right; }
+
+    /* ---- Pantallas de resultado ---- */
+    .qf-res { text-align: center; }
+    .qf-badge { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 18px; padding: 7px 14px;
+                border-radius: 99px; font-family: var(--font-mono); font-size: 0.6875rem;
+                letter-spacing: 0.12em; text-transform: uppercase; }
+    .qf-badge.ok { color: #4ADE80; background: rgba(74, 222, 128, 0.10); border: 1px solid rgba(74, 222, 128, 0.28); }
+    .qf-badge.no { color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-ring); }
+    .qf-res h3 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.015em;
+                 font-size: clamp(1.5rem, 5.2vw, 2rem); line-height: 1.1; margin: 0 0 14px; color: var(--text-primary); }
+    .qf-res p { font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); margin: 0 auto 14px; max-width: 42ch; }
+    .qf-res .qf-cta { margin-top: 10px; width: 100%; }
+    .qf-wa { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+             min-height: 56px; padding: 16px 24px; cursor: pointer;
+             font-family: var(--font-sans); font-size: 1rem; font-weight: 500;
+             color: var(--accent-text-on); background: var(--accent-strong);
+             border: 1px solid transparent; border-radius: var(--radius-button, 12px);
+             box-shadow: var(--shadow-cta); transition: transform 0.35s var(--ease-spring); }
+    .qf-wa:hover { transform: translateY(-2px); }
+    .qf-wa svg { width: 20px; height: 20px; flex: 0 0 auto; }
+    .qf-sub { display: block; margin-top: 14px; font-size: 0.8125rem; color: var(--text-muted); }
+    .qf-sub button { background: none; border: 0; padding: 0; cursor: pointer; color: var(--text-secondary);
+                     font-family: inherit; font-size: inherit; text-decoration: underline; }
+
+    @media (max-width: 480px) {
+      .qf { padding: 0; }
+      .qf-panel { max-width: 100%; max-height: 100dvh; height: 100dvh; border: 0; border-radius: 0; }
+      .qf-head { padding: max(18px, env(safe-area-inset-top)) 20px 0; }
+      .qf-body { padding: 20px 20px max(28px, env(safe-area-inset-bottom)); }
+      .qf-opt { font-size: 0.9375rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .qf-backdrop, .qf-panel, .qf-bar i, .qf-opt, .qf-wa { transition: none; }
+      .qf-fade { animation: none; }
+    }
+
   </style>
 </head>
 
@@ -759,7 +884,7 @@
       <a href="#resultados">Resultados</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a class="header-cta" href="https://calendly.com/keygenestudio/new-meeting" target="_blank" rel="noopener">Agendar llamada</a>
+    <a class="header-cta" data-qf href="https://wa.me/REEMPLAZAR_NUMERO" target="_blank" rel="noopener">Iniciar conversación</a>
   </header>
 
   <main>
@@ -774,7 +899,7 @@
         <h1 class="reveal">Un negocio con <span class="serif-italic accent">orden</span>, no solo movimiento.</h1>
         <p class="lead reveal">El sistema que migra tu negocio de vender sesiones sueltas a vender tratamientos — sin perseguir a nadie.</p>
         <div class="reveal">
-          <a class="cta-primary" href="https://calendly.com/keygenestudio/new-meeting" target="_blank" rel="noopener" aria-label="Agendar mi llamada">Agendar mi llamada</a>
+          <a class="cta-primary" data-qf href="https://wa.me/REEMPLAZAR_NUMERO" target="_blank" rel="noopener" aria-label="Iniciar conversación">Iniciar conversación</a>
         </div>
       </div>
 
@@ -1040,10 +1165,10 @@
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Un coach humano que te acompaña por detrás</li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><b>Bonus incluido:</b> el curso completo <i>Digitaliza tu gabinete con Claude</i> — es el módulo 6 del programa</span></li>
             </ul>
-            <a class="cta-primary" href="https://calendly.com/keygenestudio/new-meeting" target="_blank" rel="noopener">Agendar mi llamada</a>
+            <a class="cta-primary" data-qf href="https://wa.me/REEMPLAZAR_NUMERO" target="_blank" rel="noopener">Iniciar conversación</a>
 
             <!-- ===========================================================
-                 PRECIO — DESACTIVADO (el funnel es llamada de aplicación).
+                 PRECIO — DESACTIVADO (el funnel es conversación por WhatsApp).
                  Para activarlo, descomentá este bloque.
                  <div class="price" style="margin-top:24px;text-align:center;">
                    <div class="p-amount" style="font-size:2.4rem;font-weight:600;">
@@ -1312,7 +1437,7 @@
       <div class="container-text">
         <h2 class="reveal">La pregunta no es si <span class="serif-italic accent">funciona</span>. Es cuánto tiempo más vas a seguir improvisando.</h2>
         <div class="reveal">
-          <a class="cta-primary lg" href="https://calendly.com/keygenestudio/new-meeting" target="_blank" rel="noopener" aria-label="Agendar mi llamada de aplicación">Agendar mi llamada de aplicación</a>
+          <a class="cta-primary lg" data-qf href="https://wa.me/REEMPLAZAR_NUMERO" target="_blank" rel="noopener" aria-label="Iniciar conversación">Iniciar conversación</a>
         </div>
       </div>
     </section>
@@ -1328,11 +1453,28 @@
         <a href="#metodo">Método</a>
         <a href="#resultados">Resultados</a>
         <a href="#faq">FAQ</a>
-        <a href="https://calendly.com/keygenestudio/new-meeting" target="_blank" rel="noopener">Agendar llamada</a>
+        <a data-qf href="https://wa.me/REEMPLAZAR_NUMERO" target="_blank" rel="noopener">Iniciar conversación</a>
       </nav>
       <span class="foot-copy">© 2026 METODO KEYGEN</span>
     </div>
   </footer>
+
+  <!-- =========================================
+       FORMULARIO DE CALIFICACIÓN (pop-up)
+       Lo abren los CTA "Iniciar conversación" (a[data-qf]).
+       El contenido se renderiza desde EMK_Form (ver <script> al final).
+       ========================================= -->
+  <div class="qf" id="qfModal" role="dialog" aria-modal="true" aria-labelledby="qfHeading">
+    <div class="qf-backdrop" data-qf-close></div>
+    <div class="qf-panel">
+      <button class="qf-close" type="button" data-qf-close aria-label="Cerrar formulario">&times;</button>
+      <div class="qf-head">
+        <span class="qf-step" id="qfStep">Antes de empezar</span>
+        <div class="qf-bar" role="progressbar" aria-labelledby="qfStep" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="qfBarWrap"><i id="qfBar"></i></div>
+      </div>
+      <div class="qf-body" id="qfBody"></div>
+    </div>
+  </div>
 
   <!-- Lightbox (galería del muro de wins) — sin librerías -->
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Captura ampliada">
@@ -1400,21 +1542,6 @@
       EMK_Intro.play(function () { EMK_Intro.unlock(); });
     })();
 
-    /* =========================================
-       Calendly: los botones "Agendar llamada" abren el calendario en popup.
-       Mejora progresiva: sin JS, el href sigue funcionando (abre en pestaña nueva).
-       ========================================= */
-    (function () {
-      var links = document.querySelectorAll('a[href*="calendly.com"]');
-      Array.prototype.forEach.call(links, function (a) {
-        a.addEventListener('click', function (e) {
-          if (window.Calendly && typeof Calendly.initPopupWidget === 'function') {
-            e.preventDefault();
-            Calendly.initPopupWidget({ url: a.getAttribute('href') });
-          }
-        });
-      });
-    })();
 
 
     /* =========================================
@@ -1580,6 +1707,330 @@
         if (e.key === 'Tab') { e.preventDefault(); closeBtn.focus(); }
       });
     })();
+
+    /* =========================================
+       FORMULARIO DE CALIFICACIÓN — pop-up de "Iniciar conversación"
+
+       Filtra por NIVEL DE CONCIENCIA (digital y de negocio) antes de
+       entregar el WhatsApp. Dos salidas:
+         · Califica     → botón de WhatsApp con el diagnóstico precargado.
+         · No califica  → oferta del curso (el escalón anterior al programa).
+
+       ⚠ CONFIG: lo único que hay que editar para ponerlo en producción.
+       ========================================= */
+    var EMK_Form = (function () {
+
+      var CONFIG = {
+        /* Número de WhatsApp con código de país, sin +, sin espacios ni guiones. */
+        WHATSAPP: 'REEMPLAZAR_NUMERO',          /* ⚠ FALTA: numero de WhatsApp Business con codigo de pais, solo digitos */
+        /* Link del curso que se ofrece a quien no califica. */
+        CURSO_URL: 'https://keygen.tiendup.com/curso/digitaliza-tu-gabinete-con-claude',
+
+        /* Cortes del puntaje (suman 5 preguntas, máximo 15). */
+        UMBRAL_VERDE: 11,      /* 11-15 → califica, prioridad alta */
+        UMBRAL_AMARILLO: 7,    /* 7-10  → califica, entra etiquetada */
+
+        /* true  = quien no usa la computadora queda afuera siempre (criterio actual).
+           false = si además tiene sistema de gestión, pasa marcada para revisar a mano. */
+        CELULAR_ESTRICTO: true
+      };
+
+      /* ---------------------------------------------------------------
+         PREGUNTAS. El orden importa:
+           1) años      → contexto, no puntúa. Abre por su expertise.
+           2) gestion   → determinante combinada.
+           3) equipo    → dispositivo: DETERMINANTE, corta sola.
+           4) anuncios  → relevante, no corta.
+           5) formacion → relevante, no corta.
+           6) estructura→ ruteo de sub-avatar, no puntúa.
+           7) busca     → DETERMINANTE, corta sola. Va última a propósito.
+         Cada opción: t = texto · p = puntos · r = resumen para el WhatsApp.
+         --------------------------------------------------------------- */
+      var QUESTIONS = [
+        {
+          id: 'anios', tag: 'Trayectoria', score: false,
+          q: '¿Cuánto tiempo llevás en el rubro?',
+          hint: 'Para entender desde dónde venís antes de hablar de lo que falta.',
+          opts: [
+            { t: 'Menos de 2 años', r: 'menos de 2 años' },
+            { t: 'Entre 2 y 5 años', r: '2 a 5 años' },
+            { t: 'Entre 5 y 15 años', r: '5 a 15 años' },
+            { t: 'Más de 15 años', r: 'más de 15 años' }
+          ]
+        },
+        {
+          id: 'gestion', tag: 'Gestión', score: true,
+          q: '¿Cómo llevás hoy los turnos y los datos de tus clientas?',
+          opts: [
+            { t: 'Cuaderno, agenda de papel o de memoria', p: 0, r: 'papel o memoria' },
+            { t: 'Notas del celular y los chats de WhatsApp', p: 1, r: 'notas del celular' },
+            { t: 'Una planilla (Excel o Google Sheets)', p: 2, r: 'planilla' },
+            { t: 'Una app de turnos o un sistema de gestión', p: 3, r: 'sistema de gestión' }
+          ]
+        },
+        {
+          id: 'dispositivo', tag: 'Herramientas', score: true,
+          q: 'Cuando tenés que resolver algo del negocio que no es atender, ¿desde dónde lo hacés?',
+          hint: 'Números, mails, contenido, trámites.',
+          opts: [
+            { t: 'Solo del celular, la computadora casi no la toco', p: 0, r: 'solo celular' },
+            { t: 'Del celular casi todo, la compu para cosas puntuales', p: 1, r: 'celular, compu puntual' },
+            { t: 'Uso la compu seguido: planillas, mails, archivos', p: 2, r: 'compu seguido' },
+            { t: 'Uso la compu todos los días y me manejo cómoda con programas nuevos', p: 3, r: 'compu diaria, cómoda con herramientas' }
+          ]
+        },
+        {
+          id: 'anuncios', tag: 'Anuncios', score: true,
+          q: '¿Alguna vez hiciste anuncios pagos?',
+          opts: [
+            { t: 'Nunca', p: 0, r: 'nunca hizo ads' },
+            { t: 'Solo con el botón "promocionar" de Instagram', p: 1, r: 'botón promocionar' },
+            { t: 'Le pagué a alguien para que me los haga', p: 2, r: 'tercerizó ads' },
+            { t: 'Los hice yo desde el administrador de anuncios', p: 3, r: 'ads propios desde el administrador' }
+          ]
+        },
+        {
+          id: 'formacion', tag: 'Formación', score: true,
+          q: '¿Hiciste antes alguna formación de marketing o ventas?',
+          opts: [
+            { t: 'Nunca', p: 0, r: 'sin formación comercial' },
+            { t: 'Cosas gratis: reels, videos de YouTube', p: 1, r: 'formación gratuita' },
+            { t: 'Compré un curso pago pero no lo apliqué', p: 2, r: 'curso pago sin aplicar' },
+            { t: 'Hice una formación o mentoría y llegué a aplicarla', p: 3, r: 'formación aplicada' }
+          ]
+        },
+        {
+          id: 'estructura', tag: 'Estructura', score: false,
+          q: '¿Trabajás sola o tenés equipo?',
+          opts: [
+            { t: 'Sola', r: 'trabaja sola' },
+            { t: 'Sola, pero delego alguna tarea puntual', r: 'sola con delegación puntual' },
+            { t: 'Tengo 1 o 2 personas', r: 'equipo de 1-2' },
+            { t: 'Tengo un centro con equipo', r: 'centro con equipo' }
+          ]
+        },
+        {
+          id: 'busca', tag: 'Objetivo', score: true,
+          q: '¿Qué estás buscando?',
+          hint: 'La última, y la que más define si esto es para vos.',
+          opts: [
+            { t: 'Que una agencia se encargue y yo no me meta', p: 0, r: 'quiere tercerizar' },
+            { t: 'Que alguien me traiga clientas ya, sin que yo cambie nada', p: 1, r: 'quiere clientas ya' },
+            { t: 'Aprender a hacerlo yo, con una estructura y alguien que me corrija', p: 3, r: 'quiere aprender con estructura' },
+            { t: 'Ya tengo estructura, quiero llevarla a otro nivel', p: 3, r: 'ya tiene estructura' }
+          ]
+        }
+      ];
+
+      var modal, body, stepEl, barEl, barWrap;
+      var i = 0, answers = {}, lastFocus = null;
+      var html = document.documentElement;
+
+      /* ---- utilidades ---- */
+      function esc(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+      function progreso(n) {
+        var pct = Math.round((n / QUESTIONS.length) * 100);
+        barEl.style.width = pct + '%';
+        barWrap.setAttribute('aria-valuenow', String(pct));
+      }
+
+      /* ---- evaluación ---- */
+      function evaluar() {
+        var total = 0;
+        QUESTIONS.forEach(function (q) {
+          if (q.score && answers[q.id]) { total += answers[q.id].p; }
+        });
+
+        var gestion = answers.gestion.p;
+        var disp = answers.dispositivo.p;
+        var busca = answers.busca.p;
+
+        /* Corte duro 1 — no usa la computadora. Sin esto no hay Módulo 6. */
+        var sinBaseDigital = (disp === 0 && (CONFIG.CELULAR_ESTRICTO || gestion < 3));
+        /* Corte duro 2 — combo papel + casi nada de compu. */
+        var todoAnalogico = (gestion === 0 && disp <= 1);
+        /* Corte duro 3 — busca tercerizar: producto equivocado, no conciencia baja. */
+        var quiereAgencia = (busca === 0);
+
+        if (quiereAgencia) { return { ok: false, motivo: 'agencia', total: total }; }
+        if (sinBaseDigital || todoAnalogico) { return { ok: false, motivo: 'digital', total: total }; }
+        if (total < CONFIG.UMBRAL_AMARILLO) { return { ok: false, motivo: 'puntaje', total: total }; }
+
+        return {
+          ok: true,
+          total: total,
+          nivel: total >= CONFIG.UMBRAL_VERDE ? 'verde' : 'amarillo',
+          revisar: (disp === 0)
+        };
+      }
+
+      /* ---- mensaje de WhatsApp con el diagnóstico ya cargado ---- */
+      function mensajeWA(res) {
+        var l = ['Hola Cris, vengo de la web y completé el formulario.', ''];
+        QUESTIONS.forEach(function (q) {
+          if (answers[q.id]) { l.push('· ' + q.tag + ': ' + answers[q.id].r); }
+        });
+        l.push('');
+        l.push('Quiero que hablemos del programa.');
+        return 'https://wa.me/' + CONFIG.WHATSAPP + '?text=' + encodeURIComponent(l.join('\n'));
+      }
+
+      /* ---- render de pregunta ---- */
+      function pintarPregunta() {
+        var q = QUESTIONS[i];
+        progreso(i);
+        stepEl.textContent = 'Paso ' + (i + 1) + ' de ' + QUESTIONS.length;
+
+        var h = '<div class="qf-fade">';
+        if (i === 0) { h += '<span class="qf-intro-k">Antes de pasarte el WhatsApp</span>'; }
+        h += '<h3 class="qf-q" id="qfHeading">' + esc(q.q) + '</h3>';
+        if (i === 0) {
+          h += '<p class="qf-hint">No es un formulario de contacto: es para llegar con tu caso leído y no hacerte perder tiempo con preguntas obvias.</p>';
+        } else if (q.hint) {
+          h += '<p class="qf-hint">' + esc(q.hint) + '</p>';
+        }
+        h += '<div class="qf-opts" role="group" aria-labelledby="qfHeading">';
+        q.opts.forEach(function (o, k) {
+          var sel = answers[q.id] && answers[q.id].t === o.t ? ' sel' : '';
+          h += '<button class="qf-opt' + sel + '" type="button" data-k="' + k + '">' +
+               '<span class="qf-dot" aria-hidden="true"></span><span>' + esc(o.t) + '</span></button>';
+        });
+        h += '</div><div class="qf-nav">';
+        h += i > 0
+          ? '<button class="qf-back" type="button" data-back>← Volver</button>'
+          : '<span class="qf-legal">Tarda menos de un minuto</span>';
+        h += '</div></div>';
+
+        body.innerHTML = h;
+        var first = body.querySelector('.qf-opt');
+        if (first) { first.focus({ preventScroll: true }); }
+
+        body.querySelectorAll('.qf-opt').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var o = q.opts[+btn.getAttribute('data-k')];
+            answers[q.id] = { t: o.t, r: o.r, p: (typeof o.p === 'number' ? o.p : 0) };
+            if (i < QUESTIONS.length - 1) { i++; pintarPregunta(); } else { pintarResultado(); }
+          });
+        });
+        var back = body.querySelector('[data-back]');
+        if (back) { back.addEventListener('click', function () { i--; pintarPregunta(); }); }
+      }
+
+      /* ---- render de resultado ---- */
+      function pintarResultado() {
+        var res = evaluar();
+        progreso(QUESTIONS.length);
+        stepEl.textContent = 'Listo';
+
+        var h = '<div class="qf-fade qf-res">';
+
+        if (res.ok) {
+          h += '<span class="qf-badge ok">Tu perfil encaja</span>';
+          h += '<h3 id="qfHeading">Sos de las que E.M.K. puede ayudar de verdad.</h3>';
+          h += '<p>Por lo que contestaste, ya tenés la base para que el sistema se instale y funcione. Escribime por WhatsApp: el mensaje va con tus respuestas cargadas, así arrancamos sabiendo de qué hablamos.</p>';
+          h += '<a class="qf-wa" href="' + mensajeWA(res) + '" target="_blank" rel="noopener">' +
+               '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2m0 18.15c-1.53 0-3.03-.41-4.34-1.19l-.31-.18-3.23.85.86-3.15-.2-.33a8.2 8.2 0 0 1-1.26-4.24c0-4.54 3.7-8.23 8.24-8.23 4.54 0 8.23 3.69 8.23 8.23 0 4.54-3.69 8.24-8.19 8.24m4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.06-.39-2.02-1.25-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.01-.39.11-.51.13-.14.25-.29.37-.46.12-.16.16-.27.25-.45.08-.17.04-.33-.02-.46-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29"/></svg>' +
+               'Escribirle por WhatsApp</a>';
+          h += '<span class="qf-sub">Te responde Cristian, no un bot.</span>';
+        } else {
+          h += '<span class="qf-badge no">Todavía no</span>';
+          if (res.motivo === 'agencia') {
+            h += '<h3 id="qfHeading">Preferimos ser honestos con vos.</h3>';
+            h += '<p>Lo que estás buscando es que alguien se encargue, y E.M.K. hace justo lo contrario: te enseña a manejar tu propio sistema, y eso pide tiempo tuyo todas las semanas. Entrar buscando otra cosa sería gastar plata y energía en algo que hoy no te va a dar lo que necesitás, y no queremos eso para vos.</p>';
+            h += '<p>Si más adelante querés llevar las riendas vos, hay un lugar mucho más tranquilo para empezar.</p>';
+          } else if (res.motivo === 'digital') {
+            h += '<h3 id="qfHeading">No queremos que pierdas tiempo ni plata.</h3>';
+            h += '<p>Se nota que sabés lo tuyo y que le venís poniendo el cuerpo hace rato, así que te lo decimos de frente: E.M.K. arranca dando por hecho que ya te movés con herramientas digitales. Son cosas bastante complejas, y armar esa base desde cero mientras corre el programa te comería el tiempo y la plata sin llegar a ver resultados.</p>';
+            h += '<p>No es que no puedas. Es que hay un paso antes, y es mucho más simple y mucho más barato de lo que parece.</p>';
+          } else {
+            h += '<h3 id="qfHeading">Hoy no, y preferimos decírtelo.</h3>';
+            h += '<p>Por lo que nos contaste, el programa te quedaría cuesta arriba en este momento. No es por vos ni por tu trabajo: hay bases que conviene tener armadas antes, y sin eso serían cuatro meses de esfuerzo y de plata que no vas a poder aprovechar.</p>';
+            h += '<p>No es una puerta cerrada, es un orden. Empezá por acá y cuando lo tengas andando, volvé.</p>';
+          }
+          h += '<a class="qf-wa" href="' + esc(CONFIG.CURSO_URL) + '" target="_blank" rel="noopener">Ver el curso</a>';
+          h += '<span class="qf-sub">Cuando lo tengas resuelto, acá vamos a estar. · <button type="button" data-restart>Volver a responder</button></span>';
+        }
+
+        h += '</div>';
+        body.innerHTML = h;
+
+        var cta = body.querySelector('.qf-wa');
+        if (cta) { cta.focus({ preventScroll: true }); }
+        var re = body.querySelector('[data-restart]');
+        if (re) { re.addEventListener('click', function () { i = 0; answers = {}; pintarPregunta(); }); }
+
+        /* Hook de analítica: si más adelante suman Pixel / GA / GTM, el evento ya sale de acá. */
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'emk_form_completado',
+          calificado: res.ok,
+          motivo: res.motivo || res.nivel,
+          puntaje: res.total
+        });
+      }
+
+      /* ---- abrir / cerrar ---- */
+      function trap(e) {
+        if (e.key === 'Escape') { cerrar(); return; }
+        if (e.key !== 'Tab') { return; }
+        var f = modal.querySelectorAll('button, a[href]');
+        if (!f.length) { return; }
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+
+      function abrir() {
+        lastFocus = document.activeElement;
+        i = 0; answers = {};
+        modal.classList.add('open');
+        html.style.overflow = 'hidden';
+        pintarPregunta();
+        requestAnimationFrame(function () { modal.classList.add('in'); });
+        document.addEventListener('keydown', trap);
+      }
+
+      function cerrar() {
+        modal.classList.remove('in');
+        document.removeEventListener('keydown', trap);
+        setTimeout(function () {
+          modal.classList.remove('open');
+          html.style.overflow = '';
+          if (lastFocus && lastFocus.focus) { lastFocus.focus(); }
+        }, 300);
+      }
+
+      /* ---- init ---- */
+      function init() {
+        modal = document.getElementById('qfModal');
+        if (!modal) { return; }
+        if (!/^[0-9]{8,15}$/.test(CONFIG.WHATSAPP)) {
+          console.error('[EMK] Falta configurar CONFIG.WHATSAPP en el formulario. '
+            + 'El boton de WhatsApp no va a funcionar hasta que se reemplace por el numero real.');
+        }
+        body = document.getElementById('qfBody');
+        stepEl = document.getElementById('qfStep');
+        barEl = document.getElementById('qfBar');
+        barWrap = document.getElementById('qfBarWrap');
+
+        /* Los CTA llevan href a WhatsApp como fallback: sin JS el link sigue sirviendo. */
+        document.querySelectorAll('[data-qf]').forEach(function (a) {
+          a.addEventListener('click', function (e) { e.preventDefault(); abrir(); });
+        });
+        modal.querySelectorAll('[data-qf-close]').forEach(function (b) {
+          b.addEventListener('click', cerrar);
+        });
+      }
+
+      init();
+      return { abrir: abrir, cerrar: cerrar, config: CONFIG };
+    })();
+
+
   </script>
 </body>
 </html>
