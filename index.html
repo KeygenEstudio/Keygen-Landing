@@ -884,7 +884,7 @@
       <a href="#resultados">Resultados</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a class="header-cta" data-qf href="https://wa.me/REEMPLAZAR_NUMERO" target="_blank" rel="noopener">Iniciar conversación</a>
+    <a class="header-cta" data-qf href="https://wa.me/5491133339719" target="_blank" rel="noopener">Iniciar conversación</a>
   </header>
 
   <main>
@@ -899,7 +899,7 @@
         <h1 class="reveal">Un negocio con <span class="serif-italic accent">orden</span>, no solo movimiento.</h1>
         <p class="lead reveal">El sistema que migra tu negocio de vender sesiones sueltas a vender tratamientos — sin perseguir a nadie.</p>
         <div class="reveal">
-          <a class="cta-primary" data-qf href="https://wa.me/REEMPLAZAR_NUMERO" target="_blank" rel="noopener" aria-label="Iniciar conversación">Iniciar conversación</a>
+          <a class="cta-primary" data-qf href="https://wa.me/5491133339719" target="_blank" rel="noopener" aria-label="Iniciar conversación">Iniciar conversación</a>
         </div>
       </div>
 
@@ -1165,7 +1165,7 @@
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Un coach humano que te acompaña por detrás</li>
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><b>Bonus incluido:</b> el curso completo <i>Digitaliza tu gabinete con Claude</i> — es el módulo 6 del programa</span></li>
             </ul>
-            <a class="cta-primary" data-qf href="https://wa.me/REEMPLAZAR_NUMERO" target="_blank" rel="noopener">Iniciar conversación</a>
+            <a class="cta-primary" data-qf href="https://wa.me/5491133339719" target="_blank" rel="noopener">Iniciar conversación</a>
 
             <!-- ===========================================================
                  PRECIO — DESACTIVADO (el funnel es conversación por WhatsApp).
@@ -1437,7 +1437,7 @@
       <div class="container-text">
         <h2 class="reveal">La pregunta no es si <span class="serif-italic accent">funciona</span>. Es cuánto tiempo más vas a seguir improvisando.</h2>
         <div class="reveal">
-          <a class="cta-primary lg" data-qf href="https://wa.me/REEMPLAZAR_NUMERO" target="_blank" rel="noopener" aria-label="Iniciar conversación">Iniciar conversación</a>
+          <a class="cta-primary lg" data-qf href="https://wa.me/5491133339719" target="_blank" rel="noopener" aria-label="Iniciar conversación">Iniciar conversación</a>
         </div>
       </div>
     </section>
@@ -1453,7 +1453,7 @@
         <a href="#metodo">Método</a>
         <a href="#resultados">Resultados</a>
         <a href="#faq">FAQ</a>
-        <a data-qf href="https://wa.me/REEMPLAZAR_NUMERO" target="_blank" rel="noopener">Iniciar conversación</a>
+        <a data-qf href="https://wa.me/5491133339719" target="_blank" rel="noopener">Iniciar conversación</a>
       </nav>
       <span class="foot-copy">© 2026 METODO KEYGEN</span>
     </div>
@@ -1722,7 +1722,7 @@
 
       var CONFIG = {
         /* Número de WhatsApp con código de país, sin +, sin espacios ni guiones. */
-        WHATSAPP: 'REEMPLAZAR_NUMERO',          /* ⚠ FALTA: numero de WhatsApp Business con codigo de pais, solo digitos */
+        WHATSAPP: '5491133339719',              /* WhatsApp Business de METODO KEYGEN */
         /* Link del curso que se ofrece a quien no califica. */
         CURSO_URL: 'https://keygen.tiendup.com/curso/digitaliza-tu-gabinete-con-claude',
 
@@ -1875,7 +1875,12 @@
           if (answers[q.id]) { l.push('· ' + q.tag + ': ' + answers[q.id].r); }
         });
         l.push('');
-        l.push('Quiero que hablemos del programa.');
+        /* El cierre cambia segun el nivel. Las dos frases suenan igual de naturales y no le
+           revelan nada a la clienta, pero le permiten al CRM distinguir verde de amarillo con
+           un filtro de "el mensaje contiene". Van sin acentos para que el filtro no falle. */
+        l.push(res.nivel === 'verde'
+          ? 'Quiero que hablemos del programa.'
+          : 'Me interesa que hablemos del programa.');
         return 'https://wa.me/' + CONFIG.WHATSAPP + '?text=' + encodeURIComponent(l.join('\n'));
       }
 
