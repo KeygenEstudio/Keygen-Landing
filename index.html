@@ -795,6 +795,33 @@
     .qf-sub button { background: none; border: 0; padding: 0; cursor: pointer; color: var(--text-secondary);
                      font-family: inherit; font-size: inherit; text-decoration: underline; }
 
+    /* ---- captura de contacto (nombre + WhatsApp) ---- */
+    .qf-form { display: flex; flex-direction: column; gap: 14px; margin: 20px 0 4px; text-align: left; }
+    .qf-field { display: flex; flex-direction: column; gap: 7px; }
+    .qf-field > label { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.14em;
+                        text-transform: uppercase; color: var(--text-muted); }
+    .qf-input { width: 100%; min-height: 52px; padding: 14px 16px; font-family: inherit; font-size: 1rem;
+                color: var(--text-primary); background: var(--bg-card);
+                border: 1px solid var(--border-strong); border-radius: 12px;
+                transition: border-color 0.2s var(--ease), background 0.2s var(--ease); }
+    .qf-input::placeholder { color: var(--text-muted); }
+    .qf-input:focus { outline: none; border-color: var(--accent); background: var(--bg-card-hover); }
+    .qf-input.err { border-color: #F87171; }
+    .qf-tel { display: flex; align-items: stretch; gap: 8px; }
+    .qf-cc { flex: 0 0 auto; display: flex; align-items: center; gap: 1px; padding: 0 12px;
+             font-family: var(--font-mono); font-size: 0.9375rem; color: var(--text-secondary);
+             background: var(--bg-card); border: 1px solid var(--border-strong); border-radius: 12px;
+             transition: border-color 0.2s var(--ease), background 0.2s var(--ease); }
+    .qf-cc:focus-within { border-color: var(--accent); background: var(--bg-card-hover); }
+    .qf-cc.err { border-color: #F87171; }
+    .qf-cc-input { width: 3ch; padding: 0; border: 0; background: none; outline: none;
+                   font-family: inherit; font-size: inherit; color: var(--text-primary); text-align: left; }
+    .qf-cc-input::-webkit-outer-spin-button,
+    .qf-cc-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .qf-tel .qf-input { flex: 1 1 auto; min-width: 0; }
+    .qf-note { margin: 0; font-size: 0.8125rem; line-height: 1.45; color: var(--text-muted); }
+    .qf-note.err { color: #F87171; }
+
     @media (max-width: 480px) {
       .qf { padding: 0; }
       .qf-panel { max-width: 100%; max-height: 100dvh; height: 100dvh; border: 0; border-radius: 0; }
@@ -1726,6 +1753,16 @@
         /* Link del curso que se ofrece a quien no califica. */
         CURSO_URL: 'https://keygen.tiendup.com/curso/digitaliza-tu-gabinete-con-claude',
 
+        /* Codigo de pais para normalizar el telefono que carga la clienta (54 = Argentina). */
+        PAIS: '54',
+
+        /* URL del Inbound Webhook de GoHighLevel.
+           Se saca en GHL: Automatizacion > Flujos de trabajo > nuevo > disparador
+           "Inbound Webhook" > copiar la URL que muestra.
+           Si queda vacia el formulario sigue funcionando igual: no manda nada al CRM
+           y la clienta no ve ningun error. */
+        WEBHOOK_URL: 'https://services.leadconnectorhq.com/hooks/Z94u3mhXCLwlyyr6k9PD/webhook-trigger/25afb71b-f6b3-45e8-86ba-38bb7e4b9891',
+
         /* Cortes del puntaje (suman 5 preguntas, máximo 15). */
         UMBRAL_VERDE: 11,      /* 11-15 → califica, prioridad alta */
         UMBRAL_AMARILLO: 7,    /* 7-10  → califica, entra etiquetada */
@@ -1868,20 +1905,114 @@
         };
       }
 
-      /* ---- mensaje de WhatsApp con el diagnóstico ya cargado ---- */
-      function mensajeWA(res) {
-        var l = ['Hola Cris, vengo de la web y completé el formulario.', ''];
+      /* ---- link de WhatsApp ----
+         Sin texto precargado: se le abre el chat vacio y ella escribe lo que quiera.
+         El etiquetado no depende del mensaje: viaja por webhook al CRM antes de que escriba. */
+      function mensajeWA() {
+        return 'https://wa.me/' + CONFIG.WHATSAPP;
+      }
+
+      /* ---- telefono ----
+         Lo deja como lo pide WhatsApp: solo digitos, con codigo de pais, sin + y sin el 15.
+         Devuelve '' si no llega a un numero valido. */
+      function normalizarTel(raw, pais) {
+        var cc = String(pais == null ? CONFIG.PAIS : pais).replace(/\D/g, '');
+        if (!cc) { return ''; }
+
+        var d = String(raw || '').replace(/\D/g, '');
+        if (!d) { return ''; }
+        d = d.replace(/^00/, '');
+        if (d.indexOf(cc) === 0 && d.length > 10) { d = d.slice(cc.length); }
+        d = d.replace(/^0/, '');
+
+        /* Argentina tiene reglas propias (el 9 de movil y el viejo 15).
+           Para cualquier otro pais dejamos el numero tal cual, con su codigo adelante. */
+        if (cc === '54') {
+          if (d.indexOf('9') === 0 && d.length === 11) { d = d.slice(1); }
+          /* el 15 viejo va despues del codigo de area: 2, 3 o 4 digitos */
+          d = d.replace(/^(\d{2})15(\d{8})$/, '$1$2');
+          d = d.replace(/^(\d{3})15(\d{7})$/, '$1$2');
+          d = d.replace(/^(\d{4})15(\d{6})$/, '$1$2');
+          return d.length === 10 ? cc + '9' + d : '';
+        }
+        return d.length >= 6 ? cc + d : '';
+      }
+
+      /* Version legible, para que ella confirme antes de mandar. */
+      function mostrarTel(t, pais) {
+        if (!t) { return ''; }
+        var cc = String(pais == null ? CONFIG.PAIS : pais).replace(/\D/g, '');
+        if (cc === '54' && t.length === 13) {
+          return '+54 9 ' + t.slice(3, 5) + ' ' + t.slice(5, 9) + '-' + t.slice(9);
+        }
+        return '+' + t;
+      }
+
+      /* ---- envio al CRM ----
+         Manda nombre, telefono, respuestas, puntaje y color. Falla en silencio a proposito:
+         si el CRM no responde, la clienta pasa igual a WhatsApp. Nunca la bloqueamos. */
+      function enviarGHL(res, nombre, tel, pais) {
+        if (!CONFIG.WEBHOOK_URL) { return; }
+
+        var payload = {
+          nombre: nombre,
+          telefono: '+' + tel,
+          telefono_plano: tel,
+          pais: pais || CONFIG.PAIS,
+          origen: 'landing-emk',
+          nivel: res.nivel,                 /* 'verde' | 'amarillo' — lo usa el If/Else del workflow */
+          puntaje: res.total,
+          puntaje_maximo: 15,
+          revisar_a_mano: res.revisar ? 'si' : 'no',
+          fecha: new Date().toISOString()
+        };
+        var resumen = [];
         QUESTIONS.forEach(function (q) {
-          if (answers[q.id]) { l.push('· ' + q.tag + ': ' + answers[q.id].r); }
+          var a = answers[q.id];
+          payload['r_' + q.id] = a ? a.t : '';
+          if (a) { resumen.push(q.tag + ': ' + a.r); }
         });
-        l.push('');
-        /* El cierre cambia segun el nivel. Las dos frases suenan igual de naturales y no le
-           revelan nada a la clienta, pero le permiten al CRM distinguir verde de amarillo con
-           un filtro de "el mensaje contiene". Van sin acentos para que el filtro no falle. */
-        l.push(res.nivel === 'verde'
-          ? 'Quiero que hablemos del programa.'
-          : 'Me interesa que hablemos del programa.');
-        return 'https://wa.me/' + CONFIG.WHATSAPP + '?text=' + encodeURIComponent(l.join('\n'));
+        payload.resumen = resumen.join(' · ');
+
+        var cuerpo = JSON.stringify(payload);
+
+        /* Mandamos los mismos datos DOS veces: en la query string y en el cuerpo.
+           GoHighLevel arma el mapeo segun como recibio la primera solicitud de ejemplo
+           (queryParams o body), asi que mandando los dos funciona en cualquier caso. */
+        var qs = [];
+        for (var k in payload) {
+          if (Object.prototype.hasOwnProperty.call(payload, k)) {
+            qs.push(encodeURIComponent(k) + '=' + encodeURIComponent(payload[k]));
+          }
+        }
+        var destino = CONFIG.WEBHOOK_URL +
+          (CONFIG.WEBHOOK_URL.indexOf('?') > -1 ? '&' : '?') + qs.join('&');
+
+        /* Plan B: si el navegador bloquea el POST por CORS (el webhook vive en otro dominio),
+           lo reintentamos en modo "no-cors" con text/plain, que no dispara preflight.
+           No podemos leer la respuesta, pero el pedido igual llega. */
+        function reintentoSinCors() {
+          try {
+            fetch(destino, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+              body: cuerpo,
+              keepalive: true
+            })['catch'](function () {});
+          } catch (e) { /* nada mas que hacer */ }
+        }
+
+        try {
+          fetch(destino, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: cuerpo,
+            keepalive: true
+          })['catch'](reintentoSinCors);
+        } catch (e) {
+          reintentoSinCors();
+        }
       }
 
       /* ---- render de pregunta ---- */
@@ -1936,11 +2067,25 @@
         if (res.ok) {
           h += '<span class="qf-badge ok">Tu perfil encaja</span>';
           h += '<h3 id="qfHeading">Sos de las que E.M.K. puede ayudar de verdad.</h3>';
-          h += '<p>Por lo que contestaste, ya tenés la base para que el sistema se instale y funcione. Escribime por WhatsApp: el mensaje va con tus respuestas cargadas, así arrancamos sabiendo de qué hablamos.</p>';
-          h += '<a class="qf-wa" href="' + mensajeWA(res) + '" target="_blank" rel="noopener">' +
+          h += '<p>Por lo que contestaste, ya tenés la base para que el sistema se instale y funcione. Dejame cómo te llamás y tu WhatsApp, y seguimos la charla ahí.</p>';
+          h += '<div class="qf-form">';
+          h += '  <div class="qf-field">';
+          h += '    <label for="qfNombre">Tu nombre</label>';
+          h += '    <input class="qf-input" id="qfNombre" name="nombre" type="text" autocomplete="given-name" placeholder="Como querés que te llame" />';
+          h += '  </div>';
+          h += '  <div class="qf-field">';
+          h += '    <label for="qfTel">Tu WhatsApp</label>';
+          h += '    <div class="qf-tel">';
+          h += '      <span class="qf-cc" id="qfCCBox">+<input class="qf-cc-input" id="qfCC" name="pais" type="tel" inputmode="numeric" maxlength="4" value="' + esc(CONFIG.PAIS) + '" aria-label="Código de país" /></span>';
+          h += '      <input class="qf-input" id="qfTel" name="telefono" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="11 2345 6789" />';
+          h += '    </div>';
+          h += '    <p class="qf-note" id="qfNota">Con característica, sin el 0 y sin el 15. Si estás fuera de Argentina, cambiá el código de país.</p>';
+          h += '  </div>';
+          h += '</div>';
+          h += '<button class="qf-wa" type="button" id="qfEnviar">' +
                '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2m0 18.15c-1.53 0-3.03-.41-4.34-1.19l-.31-.18-3.23.85.86-3.15-.2-.33a8.2 8.2 0 0 1-1.26-4.24c0-4.54 3.7-8.23 8.24-8.23 4.54 0 8.23 3.69 8.23 8.23 0 4.54-3.69 8.24-8.19 8.24m4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.06-.39-2.02-1.25-.75-.67-1.25-1.49-1.4-1.74-.14-.25-.01-.39.11-.51.13-.14.25-.29.37-.46.12-.16.16-.27.25-.45.08-.17.04-.33-.02-.46-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29"/></svg>' +
-               'Escribirle por WhatsApp</a>';
-          h += '<span class="qf-sub">Te responde Cristian, no un bot.</span>';
+               'Escribirle por WhatsApp</button>';
+          h += '<span class="qf-sub">Te responde Cristian, no un bot. Tu número no se comparte con nadie.</span>';
         } else {
           h += '<span class="qf-badge no">Todavía no</span>';
           if (res.motivo === 'agencia') {
@@ -1963,10 +2108,15 @@
         h += '</div>';
         body.innerHTML = h;
 
-        var cta = body.querySelector('.qf-wa');
-        if (cta) { cta.focus({ preventScroll: true }); }
         var re = body.querySelector('[data-restart]');
         if (re) { re.addEventListener('click', function () { i = 0; answers = {}; pintarPregunta(); }); }
+
+        if (res.ok) {
+          engancharCaptura(res);
+        } else {
+          var cta = body.querySelector('.qf-wa');
+          if (cta) { cta.focus({ preventScroll: true }); }
+        }
 
         /* Hook de analítica: si más adelante suman Pixel / GA / GTM, el evento ya sale de acá. */
         window.dataLayer = window.dataLayer || [];
@@ -1975,6 +2125,82 @@
           calificado: res.ok,
           motivo: res.motivo || res.nivel,
           puntaje: res.total
+        });
+      }
+
+      /* ---- validacion + envio al CRM + apertura de WhatsApp ---- */
+      function engancharCaptura(res) {
+        var elNombre = document.getElementById('qfNombre');
+        var elTel = document.getElementById('qfTel');
+        var elCC = document.getElementById('qfCC');
+        var elCCBox = document.getElementById('qfCCBox');
+        var elNota = document.getElementById('qfNota');
+        var elBtn = document.getElementById('qfEnviar');
+        if (!elNombre || !elTel || !elCC || !elBtn) { return; }
+        var AYUDA = 'Con característica, sin el 0 y sin el 15. Si estás fuera de Argentina, cambiá el código de país.';
+        elNombre.focus({ preventScroll: true });
+
+        /* Mientras escribe le mostramos el numero final, para que lo corrija ella si esta mal. */
+        function refrescar() {
+          elTel.classList.remove('err');
+          elCCBox.classList.remove('err');
+          elNota.classList.remove('err');
+          var t = normalizarTel(elTel.value, elCC.value);
+          elNota.textContent = t
+            ? 'Te vamos a escribir a este número: ' + mostrarTel(t, elCC.value)
+            : AYUDA;
+        }
+        elTel.addEventListener('input', refrescar);
+        elCC.addEventListener('input', function () {
+          /* el codigo de pais es solo numeros */
+          elCC.value = elCC.value.replace(/\D/g, '');
+          refrescar();
+        });
+        elNombre.addEventListener('input', function () { elNombre.classList.remove('err'); });
+
+        function abrirWhatsApp() {
+          var nombre = elNombre.value.trim();
+          var cc = elCC.value.replace(/\D/g, '');
+          var tel = normalizarTel(elTel.value, cc);
+
+          if (nombre.length < 2) {
+            elNombre.classList.add('err');
+            elNombre.focus();
+            return;
+          }
+          if (!cc) {
+            elCCBox.classList.add('err');
+            elNota.classList.add('err');
+            elNota.textContent = 'Falta el código de país. Argentina es 54.';
+            elCC.focus();
+            return;
+          }
+          if (!tel) {
+            elTel.classList.add('err');
+            elNota.classList.add('err');
+            elNota.textContent = 'Ese número no parece completo. Revisalo: característica + número, sin el 0 y sin el 15.';
+            elTel.focus();
+            return;
+          }
+
+          /* Al CRM sin esperar respuesta: la clienta no espera nada.
+             Si el CRM falla, igual entra a WhatsApp. */
+          enviarGHL(res, nombre, tel, cc);
+
+          /* window.open dentro del click, asi no lo bloquea el navegador. */
+          var url = mensajeWA();
+          var win = window.open(url, '_blank', 'noopener');
+          if (!win) { window.location.href = url; }
+
+          elBtn.disabled = true;
+          elBtn.style.opacity = '0.6';
+        }
+
+        elBtn.addEventListener('click', abrirWhatsApp);
+        [elNombre, elCC, elTel].forEach(function (el) {
+          el.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); abrirWhatsApp(); }
+          });
         });
       }
 
