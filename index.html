@@ -1856,6 +1856,17 @@
             { t: 'Aprender a hacerlo yo, con una estructura y alguien que me corrija', p: 3, r: 'quiere aprender con estructura' },
             { t: 'Ya tengo estructura, quiero llevarla a otro nivel', p: 3, r: 'ya tiene estructura' }
           ]
+        },
+        {
+          /* Confirmacion final. No puntua: corta sola si dice que no leyo.
+             Existe para que nadie llegue al chat sin saber que dura 4 meses ni cuanto sale. */
+          id: 'confirma', tag: 'Confirmación', score: false,
+          q: '¿Confirmás que leíste la información?',
+          hint: 'E.M.K. es un programa de 4 meses donde te capacitás para escalar la facturación de tu estética. Todo lo que se enseña está explicado en el video de esta misma página, y el arancel es de USD 750, con el detalle completo de lo que incluye.',
+          opts: [
+            { t: 'Sí, leí la información y quiero avanzar', p: 1, r: 'confirmó haber leído la info' },
+            { t: 'Todavía no la vi bien', p: 0, r: 'no leyó la info' }
+          ]
         }
       ];
 
@@ -1892,7 +1903,11 @@
         var todoAnalogico = (gestion === 0 && disp <= 1);
         /* Corte duro 3 — busca tercerizar: producto equivocado, no conciencia baja. */
         var quiereAgencia = (busca === 0);
+        /* Corte duro 4 — no leyo la info. Va primero porque es el unico recuperable:
+           no la rechazamos, la mandamos a informarse y que vuelva. */
+        var noLeyo = (answers.confirma && answers.confirma.p === 0);
 
+        if (noLeyo) { return { ok: false, motivo: 'info', total: total }; }
         if (quiereAgencia) { return { ok: false, motivo: 'agencia', total: total }; }
         if (sinBaseDigital || todoAnalogico) { return { ok: false, motivo: 'digital', total: total }; }
         if (total < CONFIG.UMBRAL_AMARILLO) { return { ok: false, motivo: 'puntaje', total: total }; }
@@ -2087,8 +2102,14 @@
                'Escribirle por WhatsApp</button>';
           h += '<span class="qf-sub">Te responde Cristian, no un bot. Tu número no se comparte con nadie.</span>';
         } else {
-          h += '<span class="qf-badge no">Todavía no</span>';
-          if (res.motivo === 'agencia') {
+          h += '<span class="qf-badge no">Antes de seguir</span>';
+          if (res.motivo === 'info') {
+            h += '<h3 id="qfHeading">Mirá la info primero y volvé.</h3>';
+            h += '<p>Preferimos que llegues sabiendo qué es E.M.K., cuánto dura y cuánto sale, en vez de descubrirlo en la charla. Es un programa de cuatro meses y cuesta USD 750: si eso te cierra, el resto de la conversación vale mucho más.</p>';
+            h += '<p>En el video de arriba está todo lo que se enseña, y más abajo el detalle de lo que incluye. Son unos minutos.</p>';
+            h += '<button class="qf-wa" type="button" data-ver-info>Ver la información</button>';
+            h += '<span class="qf-sub">Cuando la tengas clara, volvé y completá el formulario. · <button type="button" data-restart>Volver a responder</button></span>';
+          } else if (res.motivo === 'agencia') {
             h += '<h3 id="qfHeading">Preferimos ser honestos con vos.</h3>';
             h += '<p>Lo que estás buscando es que alguien se encargue, y E.M.K. hace justo lo contrario: te enseña a manejar tu propio sistema, y eso pide tiempo tuyo todas las semanas. Entrar buscando otra cosa sería gastar plata y energía en algo que hoy no te va a dar lo que necesitás, y no queremos eso para vos.</p>';
             h += '<p>Si más adelante querés llevar las riendas vos, hay un lugar mucho más tranquilo para empezar.</p>';
@@ -2101,8 +2122,12 @@
             h += '<p>Por lo que nos contaste, el programa te quedaría cuesta arriba en este momento. No es por vos ni por tu trabajo: hay bases que conviene tener armadas antes, y sin eso serían cuatro meses de esfuerzo y de plata que no vas a poder aprovechar.</p>';
             h += '<p>No es una puerta cerrada, es un orden. Empezá por acá y cuando lo tengas andando, volvé.</p>';
           }
-          h += '<a class="qf-wa" href="' + esc(CONFIG.CURSO_URL) + '" target="_blank" rel="noopener">Ver el curso</a>';
-          h += '<span class="qf-sub">Cuando lo tengas resuelto, acá vamos a estar. · <button type="button" data-restart>Volver a responder</button></span>';
+          /* El curso se ofrece solo a quien no califica de verdad.
+             A la que no leyó la info no: esa no está rechazada, solo desinformada. */
+          if (res.motivo !== 'info') {
+            h += '<a class="qf-wa" href="' + esc(CONFIG.CURSO_URL) + '" target="_blank" rel="noopener">Ver el curso</a>';
+            h += '<span class="qf-sub">Cuando lo tengas resuelto, acá vamos a estar. · <button type="button" data-restart>Volver a responder</button></span>';
+          }
         }
 
         h += '</div>';
@@ -2110,6 +2135,18 @@
 
         var re = body.querySelector('[data-restart]');
         if (re) { re.addEventListener('click', function () { i = 0; answers = {}; pintarPregunta(); }); }
+
+        /* "Ver la información": cierra el pop-up y la lleva al video de arriba. */
+        var vi = body.querySelector('[data-ver-info]');
+        if (vi) {
+          vi.addEventListener('click', function () {
+            cerrar();
+            setTimeout(function () {
+              var destino = document.getElementById('inicio') || document.body;
+              destino.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 320);
+          });
+        }
 
         if (res.ok) {
           engancharCaptura(res);
