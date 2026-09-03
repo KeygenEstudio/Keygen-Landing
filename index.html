@@ -830,8 +830,8 @@
 
     /* ---- bloque destacado de la ultima pregunta ----
        Existe para que la confirmacion no se lea como una pregunta mas: le da el peso
-       visual de una tarjeta. El precio va arriba junto a "4 meses" y la lista cierra,
-       para que lo ultimo que quede en la cabeza sea lo que incluye, no la cifra. */
+       visual de una tarjeta. Arriba van los dos datos duros (duracion y bonus) y la
+       lista cierra, para que lo ultimo que quede en la cabeza sea lo que incluye. */
     .qf-brief { margin: 0 0 18px; padding: 16px; border-radius: 14px;
                 background: rgba(232, 17, 45, 0.05);
                 border: 1px solid var(--accent-ring); text-align: left; }
@@ -1229,17 +1229,6 @@
               <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><b>Bonus incluido:</b> el curso completo <i>Digitaliza tu gabinete con Claude</i> — es el módulo 6 del programa</span></li>
             </ul>
             <a class="cta-primary" data-qf href="https://wa.me/5491133339719" target="_blank" rel="noopener">Iniciar conversación</a>
-
-            <!-- ===========================================================
-                 PRECIO — DESACTIVADO (el funnel es conversación por WhatsApp).
-                 Para activarlo, descomentá este bloque.
-                 <div class="price" style="margin-top:24px;text-align:center;">
-                   <div class="p-amount" style="font-size:2.4rem;font-weight:600;">
-                     <span style="font-family:var(--font-serif);font-style:italic;color:var(--accent);font-size:.5em;vertical-align:super;">USD</span> 750
-                   </div>
-                   <p style="color:var(--text-secondary);font-size:.9rem;margin-top:8px;">3 cuotas de USD 300 · o pago único con descuento</p>
-                 </div>
-                 =========================================================== -->
           </article>
 
           <article class="access-card bonus-card lbox reveal">
@@ -1248,11 +1237,7 @@
             <p class="bonus-desc">Un curso completo de IA aplicada a tu negocio: 30 clases y más de 5 horas de contenido para digitalizar tu gabinete con Claude. Afuera se vende solo. Adentro de E.M.K., ya viene incluido.</p>
             <div class="price-compare">
               <div class="pc-row">
-                <span class="pc-label">Programa E.M.K. completo <em>(con el curso incluido)</em></span>
-                <span class="pc-amount"><small>USD</small> 750</span>
-              </div>
-              <div class="pc-row pc-alt">
-                <span class="pc-label">Solo el curso, por separado</span>
+                <span class="pc-label">Solo el curso, por separado <em>(dentro de E.M.K. ya viene incluido)</em></span>
                 <span class="pc-amount"><small>USD</small> 200</span>
               </div>
             </div>
@@ -1895,19 +1880,19 @@
         },
         {
           /* Confirmacion final. No puntua: corta sola si dice que no leyo.
-             Existe para que nadie llegue al chat sin saber que dura 4 meses ni cuanto sale. */
+             Existe para que nadie llegue al chat sin saber que dura 4 meses y que incluye. */
           id: 'confirma', tag: 'Confirmación', score: false,
           q: '¿Confirmás que leíste la información?',
           /* En vez de un hint suelto va un bloque con peso visual propio: los dos datos
-             duros arriba y lo que incluye abajo, para que el ultimo golpe de vista
-             sea el valor y no el precio. */
+             duros arriba y lo que incluye abajo. El precio no se muestra: la cifra se
+             conversa por WhatsApp. */
           bloque:
             '<div class="qf-brief">' +
             '  <span class="qf-brief-k">Esto es E.M.K.</span>' +
             '  <p>Un programa donde te capacitás para <b>escalar la facturación de tu estética</b>. Todo lo que se enseña está en el video de esta misma página.</p>' +
             '  <div class="qf-facts">' +
             '    <div class="qf-fact"><span class="qf-fact-n">4 meses</span><span class="qf-fact-l">de programa completo</span></div>' +
-            '    <div class="qf-fact"><span class="qf-fact-n"><small>USD</small>750</span><span class="qf-fact-l">con el curso incluido</span></div>' +
+            '    <div class="qf-fact"><span class="qf-fact-n">Bonus</span><span class="qf-fact-l">el curso con Claude, incluido</span></div>' +
             '  </div>' +
             '  <ul class="qf-inc">' +
             '    <li>6 módulos paso a paso, <b>una tarea por semana</b></li>' +
@@ -2162,7 +2147,7 @@
           h += '<span class="qf-badge no">Antes de seguir</span>';
           if (res.motivo === 'info') {
             h += '<h3 id="qfHeading">Mirá la info primero y volvé.</h3>';
-            h += '<p>Preferimos que llegues sabiendo qué es E.M.K., cuánto dura y cuánto sale, en vez de descubrirlo en la charla. Es un programa de cuatro meses y cuesta USD 750: si eso te cierra, el resto de la conversación vale mucho más.</p>';
+            h += '<p>Preferimos que llegues sabiendo qué es E.M.K., cuánto dura y qué incluye, en vez de descubrirlo en la charla. Es un programa de cuatro meses con acompañamiento todas las semanas: si eso te cierra, el resto de la conversación vale mucho más.</p>';
             h += '<p>En el video de arriba está todo lo que se enseña, y más abajo el detalle de lo que incluye. Son unos minutos.</p>';
             h += '<button class="qf-wa" type="button" data-ver-info>Ver la información</button>';
             h += '<span class="qf-sub">Cuando la tengas clara, volvé y completá el formulario. · <button type="button" data-restart>Volver a responder</button></span>';
